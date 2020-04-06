@@ -39,6 +39,9 @@ console.log("Get messages")
   }
   
  function sendMessage(message){
+
+    socket.emit("message", message)
+
     fetch(`${window.location.href}messages`,{
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
