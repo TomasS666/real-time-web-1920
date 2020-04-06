@@ -4,7 +4,8 @@
   "description": "During this course you will learn how to build a **meaningful** real-time application. You will learn techniques to setup an open connection between the client and the server. This will enable you to send data in real-time both ways, at the same time.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,10 @@
     "cookie-parser": "~1.4.4",
     "ejs": "^3.0.1",
     "express": "^4.16.4",
-    "node-fetch": "^2.6.0"
+    "http": "0.0.1-security",
+    "mongoose": "^5.9.7",
+    "node-fetch": "^2.6.0",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
