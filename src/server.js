@@ -56,7 +56,7 @@ app
       })
 
 
-    io.on("connection", () =>{
+    io.on("connection", (socket) =>{
         console.log("a user is connected")
         socket.on('message', function(msg){
             io.emit('message', msg);
