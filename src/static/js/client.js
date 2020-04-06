@@ -27,7 +27,7 @@ function addMessages(message){
     
  function getMessages(){
 console.log("Get messages")
-   fetch("http://localhost:8080/messages") 
+   fetch(`${window.location.href}messages`) 
    .then(data => {
        console.log(data)     
        return data.json()
@@ -39,7 +39,7 @@ console.log("Get messages")
   }
   
  function sendMessage(message){
-     fetch("http://localhost:8080/messages",{
+    fetch(`${window.location.href}messages`,{
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
