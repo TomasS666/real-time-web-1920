@@ -39,7 +39,9 @@ app
     })
 
     .get('/messages', (req, res) => {
+        console.log("Testing if it comes here")
         Message.find({},(err, messages)=> {
+            console.log("Find this Message model?")
           res.send(messages);
         })
       })
