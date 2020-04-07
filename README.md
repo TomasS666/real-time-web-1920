@@ -66,6 +66,9 @@ The tutorial was written in jQuery, so I wrote it in Vanilla JS.
 Made a message scheme with Mongoose. Added Socket.io and deployed on Heroku. There were some startup issues, like the whitelisting of IP addresses. Because Heroku has highly variable IP addresses. 
 So I went to Stackoverflow but unfortunately they gave me an answer I was afraid of. The only and easy solution is to whitelist everything while not in production mode. So I went with that. 
 
+## Used packages for Week 1
+https://github.com/wilsonwu/translation-google (MIT)
+
 ## Conclusion
 
 ## License
