@@ -1,0 +1,21 @@
+<%- include("components/head.ejs"); -%>
+<%- include('components/header.ejs') %>
+<main>
+    <label>Select your language</label>
+    <select>
+        <% for( let i = 0; i < data.length; i++){ %>
+
+            <option value="<%= data[i].code.toLowerCase() %>"><%= data[i].name %></option> 
+
+        <% } %>
+    </select>
+
+    <!-- <input type="text" name="name" id="name"> -->
+    <textarea id="message" placeholder="Your Message Here"></textarea>
+    <button id="send">Send</button>
+
+    <div id="messages">
+
+    </div>
+</main>
+<%- include('components/footer.ejs') %>

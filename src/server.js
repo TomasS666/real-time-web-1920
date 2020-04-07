@@ -8,6 +8,7 @@ const dbUrl = process.env.dbUrl;
 const mongoose = require("mongoose")
 
 
+
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 
@@ -20,23 +21,21 @@ const io = require("socket.io")(http);
 const bodyParser = require('body-parser')
 const path = require("path")
 const Message = require("./models/message.js")
-// const partials = require('express-partials');
 
+const chat = require("./routes/chat.js")
+// const partials = require('express-partials');
+const translate = require('translation-google');
 app
     .use(bodyParser.urlencoded({ extended: true }))
     .use(bodyParser.json())
     // .use(partials())
     .set('view-engine', 'ejs')
     .set('views', path.join(__dirname,'views'))
-
+    .use('/', chat)
     .use(express.static(path.join(__dirname, './static'), {
         // etag: false,
         // maxAge: '31536000'
     }))
-
-    .get('/', (req, res)=>{
-        res.sendFile("index.html")
-    })
 
     .get('/messages', (req, res) => {
         console.log("Testing if it comes here")
@@ -56,11 +55,75 @@ app
       })
 
 
+      const room = {
+        name: "Room",
+        members: []
+      }
+
+    
+
     io.on("connection", (socket) =>{
-        console.log("a user is connected")
+        console.log(`user ${socket.id} is connected`)
+
+        room.members.push({
+          id: socket.id
+        })
+
         socket.on('message', function(msg){
-            io.emit('message', msg);
+            socket.emit('message', msg);
+            
+
+            room.members.forEach(member =>{
+              translate(msg.message, {
+                to: member.lang
+              })
+                .then((res) => {
+                  console.log(res.text)
+
+                  return io.to(member.id).emit('message', {
+                    name: member.id, 
+                    message: res.text
+                  })
+                })
+                .catch(err => console.log(err));
+            })
+
+            
+              
+
+
+
+              
+
+            
           });
+
+        socket.on("detected lang", function(msg){
+          console.log(msg, room.members[socket.id])
+          const member  = room.members.find( member => member.id == socket.id)
+          console.log(member)
+          member.lang = msg.lang;
+
+          console.log(room)
+        })
+
+        socket.on("disconnect", (socket) =>{
+          const member = room.members.find(member => member.id == socket.id)
+    
+          // if(member){
+            room.members.pop(member)
+            console.log(room)
+            return
+          // }else{
+          //   console.log("member is not in room")
+          //   return
+          // }
+    
+        })
+
+
+
+        console.log(room)
     })
     
     mongoose
