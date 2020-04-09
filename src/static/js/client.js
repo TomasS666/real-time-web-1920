@@ -1,19 +1,28 @@
 
-var socket = io();
+const socket = io();
 
 socket.on("message", addMessages)
 socket.on("detected lang", assignDefaultLang)
 
 const submitBtn = document.querySelector("#send")
 getMessages();
+
+socket.on("lang set", serverMsg)
+
 submitBtn.addEventListener("click", function(e){
     console.log("test")
-    sendMessage({
-        // name: document.querySelector("#name").value, 
-        name: "Tomas",
-        message:document.querySelector("#message").value, 
-    });
+    e.preventDefault()
 
+//  Check form with native HTML 5 validation
+//  If not empty, send.
+//  If someone somehow manages to send an empty message, the server will resolve this by sending
+//  back an error message to the sender.
+    if(document.forms['chat'].reportValidity()){
+        sendMessage({
+            name: "Tomas",
+            message:document.querySelector("#message").value, 
+        });
+    }
 });
 
 function assignDefaultLang(lang){
@@ -49,10 +58,10 @@ function detectUserPrefLang(){
 
 
 
-function changeLanguage(){
+function changeLanguage(langcode){
 
     socket.emit("detected lang", {
-        lang: langCode
+        lang: langcode
     })
 }
 
@@ -60,9 +69,8 @@ const dropdown = document.querySelector("select");
 
 dropdown.addEventListener("change", function(event){
     console.log(this.value)
-    if(event.target.tagName == "option"){
-        console.log(event.target.value)
-    }
+
+    changeLanguage(this.value)
 })
 
 detectUserPrefLang()
@@ -86,15 +94,41 @@ function addMessages(message){
     // console.log(message)
     const messageBox = document.querySelector("#messages")
 
-    messageBox.insertAdjacentHTML("afterbegin", 
+    messageBox.insertAdjacentHTML("beforebegin", 
     `<h4> ${message.name} </h4>
     <p>  ${message.message} </p>`
     )
 }
+
+
+socket.on("test", receiveError)
+
+
+function serverMsg(message){
+    const messageBox = document.querySelector("#messages")
+    messageBox.insertAdjacentHTML("beforebegin", 
+    `<div class="error">
+    <h4> ${message.name} </h4>
+    <p>  ${message.body} </p>
+    </div>`
+    )
+}
+
+function receiveError(err){
+    console.log(err)
+    const messageBox = document.querySelector("#messages")
+    messageBox.insertAdjacentHTML("afterbegin", 
+    `<div class="error">
+    <h4> ${err.name} </h4>
+    <p>  ${err.body} </p>
+    </div>`
+    )
+    
+}
     
  function getMessages(){
 console.log("Get messages")
-   fetch(`${window.location.href}messages`) 
+   fetch(`${window.location.href}/messages`) 
    .then(data => {
     //    console.log(data)     
        return data.json()
@@ -109,7 +143,7 @@ console.log("Get messages")
 
     socket.emit("message", message)
 
-    fetch(`${window.location.href}messages`,{
+    fetch(`${window.location.href}/messages`,{
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

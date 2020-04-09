@@ -5,7 +5,7 @@ const path = require('path')
 const countries = require("../data/countries-shortcodes.json")
 
 
-router.get('/', (req, res, next)=>{
+router.get('/chat', (req, res, next)=>{
  
     res.render("chat.ejs", {
         data: countries
