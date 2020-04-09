@@ -32,6 +32,7 @@ app
     .set('view-engine', 'ejs')
     .set('views', path.join(__dirname,'views'))
     .use('/', chat)
+    
     .use(express.static(path.join(__dirname, './static'), {
         // etag: false,
         // maxAge: '31536000'
@@ -92,7 +93,7 @@ app
                 to: room.members[i].lang
               })
                 .then((res) => {
-                  console.log(res.text)
+                  console.log(res.text + " Translations")
 
                   if(room.members[i].id != socket.id){
                     return io.to(room.members[i].id).emit('message', {
@@ -101,7 +102,17 @@ app
                     })
                   }
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+
+                  console.log("Error:", err)
+                  console.log(msg.message)
+                  if(room.members[i].id != socket.id){
+                    return io.to(room.members[i].id).emit('message', {
+                      name: `Member: ${i}`, 
+                      message: msg.message
+                    })
+                  }
+                });
             }
           }else{
            
@@ -157,7 +168,7 @@ app
     })
     
     mongoose
-    .connect(process.env.dbUrl, {
+    .connect(process.env.localDB, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
     })

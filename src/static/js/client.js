@@ -22,6 +22,8 @@ submitBtn.addEventListener("click", function(e){
             name: "Tomas",
             message:document.querySelector("#message").value, 
         });
+        
+        document.querySelector("#message").value = null;
     }
 });
 
@@ -94,10 +96,12 @@ function addMessages(message){
     // console.log(message)
     const messageBox = document.querySelector("#messages")
 
-    messageBox.insertAdjacentHTML("beforebegin", 
+    messageBox.insertAdjacentHTML("beforeend", 
     `<h4> ${message.name} </h4>
     <p>  ${message.message} </p>`
     )
+
+    window.scrollTo(0,document.querySelector("#messages").scrollHeight);
 }
 
 
@@ -106,7 +110,7 @@ socket.on("test", receiveError)
 
 function serverMsg(message){
     const messageBox = document.querySelector("#messages")
-    messageBox.insertAdjacentHTML("beforebegin", 
+    messageBox.insertAdjacentHTML("beforeend", 
     `<div class="error">
     <h4> ${message.name} </h4>
     <p>  ${message.body} </p>
@@ -117,7 +121,7 @@ function serverMsg(message){
 function receiveError(err){
     console.log(err)
     const messageBox = document.querySelector("#messages")
-    messageBox.insertAdjacentHTML("afterbegin", 
+    messageBox.insertAdjacentHTML("beforeend", 
     `<div class="error">
     <h4> ${err.name} </h4>
     <p>  ${err.body} </p>
