@@ -1,0 +1,37 @@
+{
+  "name": "Realtime",
+  "version": "1.0.0",
+  "description": "During this course you will learn how to build a **meaningful** real-time application. You will learn techniques to setup an open connection between the client and the server. This will enable you to send data in real-time both ways, at the same time.",
+  "main": "index.js",
+  "scripts": {
+    "heroku-prebuild": "npm install --dev",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TomasS666/real-time-web-1920.git"
+  },
+  "keywords": [],
+  "author": "Tomas Stolp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TomasS666/real-time-web-1920/issues"
+  },
+  "homepage": "https://github.com/TomasS666/real-time-web-1920#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "~1.4.4",
+    "ejs": "^3.0.1",
+    "express": "^4.16.4",
+    "http": "0.0.1-security",
+    "mongoose": "^5.9.7",
+    "node-fetch": "^2.6.0",
+    "socket.io": "^2.3.0",
+    "translation-google": "^0.2.1",
+    "validator": "^13.0.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
+}

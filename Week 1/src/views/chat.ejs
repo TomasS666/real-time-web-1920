@@ -1,0 +1,28 @@
+<%- include("components/head.ejs"); -%>
+<%- include('components/header.ejs') %>
+<main>
+    <form name="chat">
+        <fieldset name="lang">
+            <div class="flex">
+        <label>Select your language</label>
+        <select>
+            <% for( let i = 0; i < data.length; i++){ %>
+
+                <option value="<%= data[i].code.toLowerCase() %>"><%= data[i].name %></option> 
+
+            <% } %>
+        </select>
+        </div>
+        </fieldset>
+        <fieldset name="message">
+            <div class="flex">
+                <input id="message" placeholder="Your Message Here..." cols="40" rows="1" required></input>
+                <button id="send">Send</button>
+            </div>
+        </fieldset>
+    </form>
+    <div id="messages">
+
+    </div>
+</main>
+<%- include('components/footer.ejs') %>

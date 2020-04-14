@@ -1,0 +1,106 @@
+*{
+    box-sizing: border-box;
+}
+
+html, body{
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, sans-serif;
+    font-size: 100%;
+}
+
+header, 
+main, 
+footer{
+    max-width: 90vw;
+    margin: 0 auto;
+}
+
+.message{
+    padding: 1rem;
+}
+
+.error{
+    color: red;
+}
+
+
+/* Chat form */
+
+fieldset{
+    padding: 1rem;
+    margin: 0;
+    border: 0;
+}
+
+input, select, option{
+    padding: .5rem;
+    font-size: 1rem;
+}
+
+label{
+    font-weight: bold;
+    margin: .5rem 0;
+}
+
+option:checked{
+    background-color: blue;
+    color: #fff;
+}
+
+input {
+    resize: none;
+    width: 100%;
+    border: none;
+}
+
+form{
+    position: fixed;
+    top: 0;
+    background-color: aliceblue;
+}
+
+fieldset{
+    width: 100%;
+    left: 0;
+    position: fixed;
+    background-color: #424242;
+}
+
+fieldset[name="lang"]{
+    top: 0;
+}
+
+fieldset[name="message"]{
+    bottom: 0;
+}
+
+fieldset[name="lang"] div.flex{
+    flex-direction: column;
+}
+
+#messages{
+    margin-top: 104px;
+    margin-bottom: 66px;
+}
+
+
+fieldset div.flex{
+    display: flex;
+}
+
+fieldset[name="message"] div.flex button{
+    min-width: 6rem;
+    font-weight: bold;
+    border: none;
+}
+
+fieldset[name="message"] div.flex input:valid ~ button{
+    background-color: #0175d8;
+    color: #fff;
+}
+
+input,
+input::placeholder{
+    font-family: Arial, Helvetica, sans-serif;
+}
