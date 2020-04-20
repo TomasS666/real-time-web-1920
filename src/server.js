@@ -26,6 +26,18 @@ const Message = require("./models/message.js")
 const home = require("./routes/home.js")
 // const partials = require('express-partials');
 
+
+
+// const nlp = require('nlp_compromise');
+// const nlpNgram = require('nlp-ngram');
+// nlp.plugin(nlpNgram);
+ 
+// var t = nlp.text('she said she swims');
+// console.log(t.ngram())
+
+
+
+
 app .set('json spaces', 2)
     .use(bodyParser.urlencoded({ extended: true }))
     .use(bodyParser.json())
