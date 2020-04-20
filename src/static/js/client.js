@@ -12,7 +12,7 @@ const peerConnection = new RTCPeerConnection();
 
 
 
-
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 navigator.mediaDevices.getUserMedia({ video: true, audio: true })
 .then(function(stream) {
   
@@ -34,7 +34,9 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
   console.log(err)
 });
 
-
+}else{
+  console.log("Doesn't have this")
+}
 
 
 
