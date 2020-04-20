@@ -13,12 +13,6 @@ const mongoose = require("mongoose")
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 
-// const overview = require('./routes/overview.js')
-// const detail = require('./routes/detail.js')
-// const offline = require('./routes/offline.js')
-
-// const search = require('./routes/search.js')
-
 const bodyParser = require('body-parser')
 const path = require("path")
 const Message = require("./models/message.js")
@@ -38,7 +32,7 @@ const home = require("./routes/home.js")
 
 
 
-app .set('json spaces', 2)
+app 
     .use(bodyParser.urlencoded({ extended: true }))
     .use(bodyParser.json())
     // .use(partials())
@@ -48,19 +42,65 @@ app .set('json spaces', 2)
     
     .use(express.static(path.join(__dirname, './static')))
 
-    // .get('/', (req, res)=>{
-    //   res.statusCode(200)
-    //   res.render("home.ejs")
-    //   // res.sendFile("index.html")
-    // })
+    let activeSockets = []
 
-    // .get('/chat/messages', (req, res) => {
-       
-    //     Message.find({},(err, messages)=> {
-    //         console.log("Find this Message model?")
-    //       res.send(messages);
-    //     })
-    //   })
+
+    // Based on this source, for a better understanding 
+    // Gonna test it to try the peers, and then write my own logic  
+    // https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/
+
+    io.on("connection", (socket) => {
+    
+       console.log(`Socket ${socket.id} connected`)
+
+
+       const existingSocket = activeSockets.find(existingSocket => {
+        return existingSocket === socket.id
+       });
+
+       console.log(existingSocket)
+  
+      if (!existingSocket) {
+        activeSockets.push(socket.id);
+        console.log(activeSockets)
+        socket.emit("update-user-list", {
+          users: activeSockets.filter(existingSocket => {
+            return existingSocket !== socket.id
+          })
+        });
+  
+        socket.broadcast.emit("update-user-list", {
+          users: [socket.id]
+        });
+      }
+
+      socket.on("disconnect", () => {
+        activeSockets = activeSockets.filter(existingSocket => {
+            return  existingSocket !== socket.id
+        });
+        socket.broadcast.emit("remove-user", {
+          socketId: socket.id
+        });
+      });
+
+      socket.on("call-user", data => {
+        socket.to(data.to).emit("call-made", {
+          offer: data.offer,
+          socket: socket.id
+        });
+      });
+
+        
+socket.on("make-answer", data => {
+    socket.to(data.to).emit("answer-made", {
+      socket: socket.id,
+      answer: data.answer
+    });
+  });
+
+    })
+
+
 
    
     // mongoose

@@ -1,162 +1,157 @@
+    // Based on this source, for a better understanding 
+    // Gonna test it to try the peers, and then write my own logic  
+    // https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/
 
-const socket = io();
+const socket = io()
 
-socket.on("message", addMessages)
-socket.on("detected lang", assignDefaultLang)
+const { RTCPeerConnection, RTCSessionDescription } = window;
 
-const submitBtn = document.querySelector("#send")
-getMessages();
 
-socket.on("lang set", serverMsg)
 
-submitBtn.addEventListener("click", function(e){
-    console.log("test")
-    e.preventDefault()
+const peerConnection = new RTCPeerConnection();
 
-//  Check form with native HTML 5 validation
-//  If not empty, send.
-//  If someone somehow manages to send an empty message, the server will resolve this by sending
-//  back an error message to the sender.
-    if(document.forms['chat'].reportValidity()){
-        sendMessage({
-            name: "You",
-            message:document.querySelector("#message").value, 
-        });
-        
-        document.querySelector("#message").value = null;
-    }
+
+
+
+navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+.then(function(stream) {
+  
+  const localVideo = document.getElementById("local-video");
+  if (localVideo) {
+    localVideo.srcObject = stream;
+  }
+
+  stream.getTracks().forEach(track => {
+    console.log(track, stream)
+    peerConnection.addTrack(track, stream)
+
+
+   
+  
+  });
+})
+.catch(function(err) {
+  console.log(err)
 });
 
-function assignDefaultLang(lang){
- 
-    const dropdown = document.querySelector("select");
-    // console.log(dropdown)
-    if(dropdown){
-        const options = dropdown.querySelectorAll("option")
-        for(let i = 0; i < options.length; i++){
-            // console.log(options[i])
-            if(options[i].value == lang){
-                options[i].selected = true;
-            }
-        }
+
+
+
+
+
+ socket.on("update-user-list", (msg)=>{
+   console.log(msg)
+ })
+
+
+ socket.on("update-user-list", ({ users }) => {
+  updateUserList(users);
+ });
+  
+ socket.on("remove-user", ({ socketId }) => {
+  const elToRemove = document.getElementById(socketId);
+  
+  if (elToRemove) {
+    elToRemove.remove();
+  }
+ });
+
+
+ function updateUserList(socketIds) {
+  const activeUserContainer = document.getElementById("active-user-container");
+
+  console.log(socketIds)
+  
+  socketIds.forEach(socketId => {
+    const alreadyExistingUser = document.getElementById(socketId);
+    if (!alreadyExistingUser) {
+      const userContainerEl = createUserItemContainer(socketId);
+      activeUserContainer.appendChild(userContainerEl);
     }
-}
+  });
+ }
 
-function detectUserPrefLang(){
+ function createUserItemContainer(socketId) {
+  const userContainerEl = document.createElement("div");
   
-    
-
-    const lang = window.navigator.language || window.navigator.userLanguage
-
-    const langCode = lang.split("-")[0];
-
-    socket.emit("detected lang", {lang: langCode})
-
-    assignDefaultLang(langCode)
-    // {
-    //     language: window.navigator.language || window.navigator.userLanguage
-    // })
-}
-
-
-
-function changeLanguage(langcode){
-
-    socket.emit("detected lang", {
-        lang: langcode
-    })
-}
-
-const dropdown = document.querySelector("select");
-
-dropdown.addEventListener("change", function(event){
-    console.log(this.value)
-
-    changeLanguage(this.value)
-})
-
-detectUserPrefLang()
-
-
-function getCursorElement (id) {
-  var elementId = 'cursor-' + id;
-  var element = document.getElementById(elementId);
-  if(element == null) {
-    element = document.createElement('div');
-    element.id = elementId;
-    element.className = 'cursor';
-    // Perhaps you want to attach these elements another parent than document
-    document.appendChild(element);
-  }
-  return element;
-}
-
-
-function addMessages(message){
-    // console.log(message)
-    const messageBox = document.querySelector("#messages")
-
-    messageBox.insertAdjacentHTML("beforeend", 
-    `<h4> ${message.name} </h4>
-    <p>  ${message.message} </p>`
-    )
-
-    window.scrollTo(0,document.querySelector("#messages").scrollHeight);
-}
-
-
-socket.on("test", receiveError)
-
-
-function serverMsg(message){
-    const messageBox = document.querySelector("#messages")
-    messageBox.insertAdjacentHTML("beforeend", 
-    `<div class="error">
-    <h4> ${message.name} </h4>
-    <p>  ${message.body} </p>
-    </div>`
-    )
-}
-
-function receiveError(err){
-    console.log(err)
-    const messageBox = document.querySelector("#messages")
-    messageBox.insertAdjacentHTML("beforeend", 
-    `<div class="error">
-    <h4> ${err.name} </h4>
-    <p>  ${err.body} </p>
-    </div>`
-    )
-    
-}
-    
- function getMessages(){
-console.log("Get messages")
-   fetch(`${window.location.href}/messages`) 
-   .then(data => {
-    //    console.log(data)     
-       return data.json()
-    })
-    .then(json =>{
-        console.log(json)
-        return json.forEach(addMessages);
-    })
-  }
+  const usernameEl = document.createElement("p");
   
- function sendMessage(message){
+  userContainerEl.setAttribute("class", "active-user");
+  userContainerEl.setAttribute("id", socketId);
+  usernameEl.setAttribute("class", "username");
+  usernameEl.innerHTML = `Socket: ${socketId}`;
+  
+  userContainerEl.appendChild(usernameEl);
+  
+  userContainerEl.addEventListener("click", () => {
+    // unselectUsersFromList();
+    userContainerEl.setAttribute("class", "active-user active-user--selected");
+    const talkingWithInfo = document.getElementById("talking-with-info");
+    talkingWithInfo.innerHTML = `Talking with: "Socket: ${socketId}"`;
+    console.log(socketId)
+    callUser(socketId);
+  }); 
+  return userContainerEl;
+ }
 
-    socket.emit("message", message)
+ async function callUser(socketId) {
+   console.log(peerConnection)
+  const offer = await peerConnection.createOffer();
 
-    fetch(`${window.location.href}/messages`,{
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *client
-        body: JSON.stringify(message) // body data type must match "Content-Type" header
-      })
+console.log(`Gonna call ${offer}`)
+
+  await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
+  
+  socket.emit("call-user", {
+    offer,
+    to: socketId
+  });
+ }
+ 
+
+ socket.on("call-made", async data => {
+  // const peerConnection = new RTCPeerConnection()
+  console.log(data)
+  await peerConnection.setRemoteDescription(
+    new RTCSessionDescription(data.offer)
+  );
+  const answer = await peerConnection.createAnswer();
+  await peerConnection.setLocalDescription(new RTCSessionDescription(answer));
+  
+  socket.emit("make-answer", {
+    answer,
+    to: data.socket
+  });
+
+
+
+
+
+ });
+
+ let isAlreadyCalling = false;
+
+ socket.on("answer-made", async data => {
+  console.log("test")
+  // const peerConnection = new RTCPeerConnection()
+  await peerConnection.setRemoteDescription(
+    new RTCSessionDescription(data.answer)
+  )
+  .then(res => console.log(res))
+  .catch(err => console.log(`Error: ${err}` ))
+  
+  if (!isAlreadyCalling) {
+    callUser(data.socket);
+    console.log(data.socket)
+    isAlreadyCalling = true;
   }
+ });
+
+
+ peerConnection.ontrack = function({ streams: [stream] }) {
+  console.log("on track")
+  const remoteVideo = document.getElementById("remote-video");
+  if (remoteVideo) {
+    remoteVideo.srcObject = stream;
+  }
+ };
