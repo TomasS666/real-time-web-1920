@@ -27,19 +27,19 @@ app
   // .use(partials())
   .set('view-engine', 'ejs')
   .set('views', path.join(__dirname, 'views'))
-  .get('/', (req, res) => {
-    fetch('https://auth.predicthq.com/token', {
-      method: "POST",
-      headers: {
-        "Accept":"application/json"
-      },
-      data:{
-        "grant_type": "client_credentials",
-        "scope": "account events places"
-      }
-    })
-  })
-  // .use('/', home)
+  // .get('/', (req, res) => {
+  //   fetch('https://auth.predicthq.com/token', {
+  //     method: "POST",
+  //     headers: {
+  //       "Accept":"application/json"
+  //     },
+  //     data:{
+  //       "grant_type": "client_credentials",
+  //       "scope": "account events places"
+  //     }
+  //   })
+  // })
+  .use('/', home)
 
   .use(express.static(path.join(__dirname, './static')))
 
