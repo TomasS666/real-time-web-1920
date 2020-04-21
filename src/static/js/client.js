@@ -13,7 +13,17 @@ const peerConnection = new RTCPeerConnection(configuration);
 
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+navigator.mediaDevices.getUserMedia(
+{
+  video: {
+    facingMode: { 
+      exact: 'user'
+    }
+    
+  },
+  audio: true
+}
+)
 .then(function(stream) {
   
   const localVideo = document.getElementById("local-video");

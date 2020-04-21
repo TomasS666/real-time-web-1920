@@ -4,30 +4,16 @@
    <meta charset="UTF-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-   <title>RTW</title>
+   <title>Real-time-Web</title>
    <link rel="stylesheet" href="/css/style.css" />
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
  </head>
  <body>
    <div class="container">
      <header class="header">
     
      </header>
-     <div class="content-container">
-       <div class="active-users-panel" id="active-user-container">
-         <h3 class="panel-title">Active Users:</h3>
-       </div>
-       <div class="video-chat-container">
-         <h2 class="talk-info" id="talking-with-info"> 
-           Select active user on the left menu.
-         </h2>
-         <div class="video-container">
-           <video autoplay class="remote-video" id="remote-video"></video>
-           <video autoplay muted class="local-video" id="local-video"></video>
-         </div>
-       </div>
-     </div>
-   </div>
+    <a href="/show">Join show</a>
+   <script src="/js/socket.io.js"></script>
    <script src="/js/client.js"></script>
  </body>
 </html>
