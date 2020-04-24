@@ -12,41 +12,41 @@ const peerConnection = new RTCPeerConnection(configuration);
 
 
 
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-navigator.mediaDevices.getUserMedia(
-{
-  video: {
-    facingMode: { 
-      exact: 'user'
-    }
+// if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+// navigator.mediaDevices.getUserMedia(
+// {
+//   video: {
+//     facingMode: { 
+//       exact: 'user'
+//     }
     
-  },
-  audio: true
-}
-)
-.then(function(stream) {
+//   },
+//   audio: true
+// }
+// )
+// .then(function(stream) {
   
-  const localVideo = document.getElementById("local-video");
-  if (localVideo) {
-    localVideo.srcObject = stream;
-  }
+//   const localVideo = document.getElementById("local-video");
+//   if (localVideo) {
+//     localVideo.srcObject = stream;
+//   }
 
-  stream.getTracks().forEach(track => {
-    console.log(track, stream)
-    peerConnection.addTrack(track, stream)
+//   stream.getTracks().forEach(track => {
+//     console.log(track, stream)
+//     peerConnection.addTrack(track, stream)
 
 
    
   
-  });
-})
-.catch(function(err) {
-  console.log(err)
-});
+//   });
+// })
+// .catch(function(err) {
+//   console.log(err)
+// });
 
-}else{
-  console.log("Doesn't have this")
-}
+// }else{
+//   console.log("Doesn't have this")
+// }
 
 
 

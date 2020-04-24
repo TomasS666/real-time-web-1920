@@ -1,0 +1,25 @@
+<%- include('components/head.ejs') %>
+<section id="login">
+  <form action="/login" method="post" data-form="login">
+    <%if(customMessage){%>
+      <p><%= customMessage_%></p>
+    <%}%>
+    <%if(errors){%>
+      <h2>Your input is not valid yet. We provided a list of possible problems.</h2>
+      <ul class="errors">
+      <% errors.forEach((elem)=>{%>
+        <li><%= elem.msg_%></li>
+      <%})%>
+      </ul>
+    <%}%>
+    <fieldset>
+        <legend>Login</legend>
+        <label for="username">Username</label>
+        <input id="username" name="username" type="email" required placeholder="Enter your e-mailadress here" maxlength="40">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required placeholder="Enter a password here">
+      <button id="login" class="btn --primary" type="submit">Login</button>
+   </fieldset>
+  </form>
+</section>
+<%- include('components/footer.ejs') %>

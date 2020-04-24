@@ -6,7 +6,7 @@ const path = require('path')
 // const io = serverSetup.io
 
 
-router.get('/', (req, res, next)=>{
+router.get('/home', (req, res, next)=>{
 
 // Based on this source, for a better understanding 
 // Gonna test it to try the peers, and then write my own logic  
@@ -15,5 +15,7 @@ router.get('/', (req, res, next)=>{
     res.sendFile(path.resolve(__dirname,'../static/index.html'))
     
 })
+
+
 
 module.exports = router
