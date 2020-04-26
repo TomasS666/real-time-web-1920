@@ -61,8 +61,9 @@ function findUser(req, res, next) {
      *   will return to the login route.
      */
     .then((user) => {
+       
         if (user) {
-
+            console.log("user found?s")
             bcryptjs.compare(req.body.password, user.password)
                 .then((result) => {
                     if (result === true) {
@@ -72,6 +73,7 @@ function findUser(req, res, next) {
                         console.log(req.session.user)
 
                         console.log('sending to my profile');
+
                         return res.status(200).redirect('/profile');
                     } else if (result !== true) {
 
@@ -85,7 +87,8 @@ function findUser(req, res, next) {
                     }
 
                 }).catch((err) => {
-
+                    req.flash('warning', "Please try again")
+                    res.redirect(req.get('referrer'))
 
                     // let errors = req.validationErrors();
                     // req.session.customError = "Invalid Credentials";
@@ -95,9 +98,14 @@ function findUser(req, res, next) {
                     // return res.render('/login')
                 })
         }
-        // else{
-        //     // reject(new Error("User can't be found   "));
-        // }
+        else{
+            throw "User can't be found";
+        }
+    })
+    .catch(err => {
+        console.log(err)
+        req.flash('warning', "Please try again")
+        res.redirect('/login')
     })
 
 

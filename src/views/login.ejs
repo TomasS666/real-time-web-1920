@@ -12,6 +12,13 @@
       <%})%>
       </ul>
     <%}%>
+
+
+    <%if(typeof messages != "undefined"){%>
+      <p><%= messages.warning %></p>
+    <%}else{%>
+      test
+    <%}%>
     <fieldset>
         <legend>Login</legend>
         <label for="username">Username</label>

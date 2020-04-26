@@ -7,7 +7,7 @@ const mongoose = require("mongoose")
 
 const http = require("http").Server(app)
 const io = require("socket.io")(http)
-
+const flash = require('express-flash')
 const session = require('express-session')
 
 // const serverSetup = require("./server-setup")
@@ -45,6 +45,7 @@ app
     saveUninitialized: false,
     resave: false
   }))
+  .use(flash())
   // .use(partials())
   .set('view-engine', 'ejs')
   .set('views', path.join(__dirname, 'views'))
@@ -93,6 +94,9 @@ app
   .use('/', register)
   .use('/', login)
 
+
+  
+
   // .get("/", (req, res)=>{
   //     res.render("register.ejs")
   // })
@@ -128,14 +132,15 @@ app
 
 
 mongoose
-.connect(process.env.localDB, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-})
-.then(() => console.log('DB Connected!'))
-.catch(err => {
-    console.log(`DB Error: ${err.message}`);
-})
+  .connect(process.env.localDB, {
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+  })
+  .then(() => console.log('DB Connected!'))
+  .catch(err => {
+      console.log(`DB Error: ${err.message}`);
+  })
 
 
 
