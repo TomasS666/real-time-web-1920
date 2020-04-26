@@ -9,11 +9,7 @@
  </head>
  <body>
    <div class="container">
-     <header class="header">
-    <% if(typeof session != 'undefined'){ %>
-        Hi <%= session.firstName %>
-    <% } %>
-     </header>
+    <%-include('components/header.ejs', {title: title, session:session}) %>
     <a href="/show">Join show</a>
 
    <%-include('components/footer.ejs') %>

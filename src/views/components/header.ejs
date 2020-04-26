@@ -1,5 +1,19 @@
 <body>
-<header>
-    <h1>Global chatter</h1>
+<header class="header">
+
+    <% if(typeof title != 'undefined'){ %>
+        <%= title -%>
+   <% } %>
+    
+   <nav role="navigation">
+       <ul>
+            <li><a href="/edit-profile">Edit profile</a></li>
+            <li><a href="/shows">Shows</a></li>
+            <li><a href="/logout">Logout</a></li>
+       </ul>
+   </nav>
+<% if(typeof session != 'undefined'){ %>
+     Hi <%= session.firstName %>
+<% } %>
 </header>
 

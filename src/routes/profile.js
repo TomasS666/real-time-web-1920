@@ -6,6 +6,7 @@ const flash = require('express-flash')
 
 router.get('/profile', isLoggedIn, (req, res) => {
     res.render("profile.ejs", {
+        title: "Welcome",
         session: req.session
     })
 })

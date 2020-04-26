@@ -78,20 +78,13 @@ function findUser(req, res, next) {
                         console.log('sending to my profile');
 
                         return res.status(200).redirect('/profile');
-                    } else if (result !== true) {
-
-                        req.session.customError = "Invalid Credentials";
-                        console.log(err)
-                        console.log('ik hoop dat je hier terecht komt')
-                        // reject(new Error('Could not be authenticated'));
-                        return res.render('/login')
                     } else {
-                        throw 'errorrr';
+                        throw 'Invalid credits';
                     }
 
                 }).catch((err) => {
                     req.flash('warning', "Please try again")
-                    res.redirect(req.get('referrer'))
+                    res.redirect('/login')
 
                     // let errors = req.validationErrors();
                     // req.session.customError = "Invalid Credentials";
