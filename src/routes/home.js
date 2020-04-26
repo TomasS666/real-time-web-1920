@@ -6,7 +6,7 @@ const path = require('path')
 // const io = serverSetup.io
 
 
-router.get('/home', (req, res, next)=>{
+router.get('/', (req, res, next)=>{
 
 // Based on this source, for a better understanding 
 // Gonna test it to try the peers, and then write my own logic  

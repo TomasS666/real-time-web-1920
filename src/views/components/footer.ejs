@@ -2,7 +2,13 @@
 <footer>
 <a href="https://newsapi.org/">Powered by News API</a> 
 </footer>
-<script src="/js/socket.io.js"></script>
-<script src="/js/client.js"></script>
+<% 
+    if(typeof scripts != "undefined" && scripts.length){ 
+        for(let i = 0; i < scripts.length; i++){
+%>
+    <script src="/js/<%=scripts[i]%>"></script>
+<%      }
+    }
+%>
 </body>
 </html>

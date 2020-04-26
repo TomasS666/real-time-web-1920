@@ -8,7 +8,9 @@ router.get('/', (req, res, next)=>{
 // Gonna test it to try the peers, and then write my own logic  
 // https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/
 
-    res.render("show.ejs")
+    res.render("show.ejs", {
+      scripts: ['socket.io.js','show-rt.js']
+  })
     
 })
 
@@ -50,6 +52,7 @@ module.exports = function(io){
       });
     
       socket.on("call-user", data => {
+        console.log('Calling user');
         socket.to(data.to).emit("call-made", {
           offer: data.offer,
           socket: socket.id
@@ -58,6 +61,7 @@ module.exports = function(io){
     
     
       socket.on("make-answer", data => {
+        console.log("Making answer");
         socket.to(data.to).emit("answer-made", {
           socket: socket.id,
           answer: data.answer

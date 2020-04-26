@@ -10,11 +10,12 @@
  <body>
    <div class="container">
      <header class="header">
-    
+    <% if(typeof session != 'undefined'){ %>
+        Hi <%= session.firstName %>
+    <% } %>
      </header>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
-   <!-- <script src="/js/socket.io.js"></script>
-   <script src="/js/client.js"></script> -->
+    <a href="/show">Join show</a>
+
+   <%-include('components/footer.ejs') %>
  </body>
 </html>

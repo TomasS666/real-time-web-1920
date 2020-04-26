@@ -7,46 +7,49 @@ const socket = io()
 const { RTCPeerConnection, RTCSessionDescription } = window;
 
 
-const configuration =  {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+const configuration =  {'iceServers': [{
+  'urls': 'stun:stun.l.google.com:19302'}
+]}
 const peerConnection = new RTCPeerConnection(configuration);
 
 
+// Feature detect navigator mediaDevices and getuserMedia
+function FD_checkMediaDevices(){
+  return navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? true : false
+}
 
-// if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-// navigator.mediaDevices.getUserMedia(
-// {
-//   video: {
-//     facingMode: { 
-//       exact: 'user'
-//     }
+function promptMedia(constraints){
+  if(FD_checkMediaDevices()){ 
+    return navigator.mediaDevices.getUserMedia(constraints)
+  }else{
+    return;
+  }
+}
+
+promptMedia({
+  video: {
+    facingMode: { 
+      exact: 'user'
+    }
+  },
+  audio: true
+})
+  .then(function(stream) {
     
-//   },
-//   audio: true
-// }
-// )
-// .then(function(stream) {
-  
-//   const localVideo = document.getElementById("local-video");
-//   if (localVideo) {
-//     localVideo.srcObject = stream;
-//   }
+    const localVideo = document.getElementById("local-video");
+    if (localVideo) {
+      localVideo.srcObject = stream;
+    }
 
-//   stream.getTracks().forEach(track => {
-//     console.log(track, stream)
-//     peerConnection.addTrack(track, stream)
-
-
-   
-  
-//   });
-// })
-// .catch(function(err) {
-//   console.log(err)
-// });
-
-// }else{
-//   console.log("Doesn't have this")
-// }
+    stream.getTracks().forEach(track => {
+      console.log(track, stream)
+      peerConnection.addTrack(track, stream)
+    
+    });
+  })
+  .catch(function(err) {
+    console.log(err)
+  });
 
 
 

@@ -2,12 +2,15 @@ const mongoose = require('mongoose');
 // const Band = require('../band.js');
 const Schema = mongoose.Schema;
 
-const artist = new Schema({
-    firstName: {type:String, required: true},
-    lastName: {type:String, required: true},
-    userName: {type:String, required: true, unique: true},
-    password: {type:String, required: true},
-  });
+const User = require('./User_BASE')
+
+const Show = require('./show');
+
+const Artist = User.discriminator('Artist', new mongoose.Schema({
+    shows: [Show],
+    genres: [String]
+  })
+)
 
 
-module.exports = mongoose.model('Artist', artist);
+module.exports = mongoose.model('Artist');

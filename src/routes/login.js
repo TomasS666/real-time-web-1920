@@ -3,6 +3,8 @@ const bcryptjs = require('bcryptjs');
 const express = require('express');
 const router = express.Router();
 
+const User = require('../models/User_BASE');
+
 router.get('/login', (req, res) => {
     /*   I check everywhere with my middleware authentication if someone is not logged in yet.
      *   If a user is not logged in, it renders the login page. 
@@ -10,7 +12,7 @@ router.get('/login', (req, res) => {
      *   It redirects you to /my-profile where the my profile route is handled.
      */
     if (req.session.user) {
-        return res.redirect('/home');
+        return res.redirect('/profile');
     }
 
     /* Rendering login with a title, and offline to true.
@@ -29,87 +31,77 @@ router.get('/login', (req, res) => {
 });
 
 
-router.post('/login', (req, res) => {
+router.post('/login', findUser,  (req, res) => {
     console.log('test');
 
-    // User query where the input of the username, in my case the unique username which is the emailaddress.
-    Artist.findOne({
-            userName: req.body.username
-        }).exec()
-        //  Exec makes this query an full promise
-
-        /*  Then get the result of the query. If the user evaluates to true, compare the input of the password field
-         *   to the password of the user that has been found in the database.
-         *   If the result equals to true, create a session
-         *   Redirect to my profile, where the session can be used, if there is no session available there, the user
-         *   will return to the login route.
-         */
-        .then((user) => {
-            if (user) {
-
-                bcryptjs.compare(req.body.password, user.password)
-                    .then((result) => {
-                        if (result === true) {
-                            console.log('nice, logged in');
-                            req.session.user = user.userName;
-                            req.session.firstName = user.firstName;
-                            console.log(req.session.user)
-
-                            console.log('sending to my profile');
-                            return res.status(200).redirect('/my-profile');
-                        } else if (result !== true) {
-
-                            req.session.customError = "Invalid Credentials";
-                            console.log(err)
-                            console.log('ik hoop dat je hier terecht komt')
-                            // reject(new Error('Could not be authenticated'));
-                            return res.render('/login')
-                        } else {
-                            throw 'errorrr';
-                        }
-
-                    }).catch((err) => {
+  
 
 
-                        // let errors = req.validationErrors();
-                        // req.session.customError = "Invalid Credentials";
-                        // console.log(err)
-                        // console.log('ik hoop dat je hier terecht komt')
-                        // // reject(new Error('Could not be authenticated'));
-                        // return res.render('/login')
-                    })
-            }
-            // else{
-            //     // reject(new Error("User can't be found   "));
-            // }
-        })
-    // .catch((err)=>{
-    //     console.log(err)
-    // })
-
-    // .then((result)=>{
-    //     console.log(req.session.user)
-    //     console.log('sending to my profile');
-    //     res.send(req.session.user)
-
-    //     // res.status(200).render('my-profile.ejs', {firstName:req.session.firstName});
-    //     // return res.status(200).redirect('/my-profile');
-    //     // console.log('send to profile')
-    // })
-
-    // Catch the error of the latest then. 
-    // .catch((err) => {
-    //     console.log(`Following error while attempting to login ${err.message}`);
-
-    //     if (String(req.body.emailaddress).length !== 0) {
-    //         let enteredEmail = req.session.emailaddress;
-    //         res.render('register.ejs', {
-    //             enteredEmail: enteredEmail
-    //         });
-    //     } else {
-    //         res.render('register.ejs');
-    //     }
-    // })
+  
+  
 });
+
+
+
+function findUser(req, res, next) {
+
+    // const userrole = req.body.userrole
+    // console.log(userrole + 'is trying to login')
+
+      // User query where the input of the username, in my case the unique username which is the emailaddress.
+    User.findOne({
+        userName: req.body.username
+    }).exec()
+    //  Exec makes this query an full promise
+
+    /*  Then get the result of the query. If the user evaluates to true, compare the input of the password field
+     *   to the password of the user that has been found in the database.
+     *   If the result equals to true, create a session
+     *   Redirect to my profile, where the session can be used, if there is no session available there, the user
+     *   will return to the login route.
+     */
+    .then((user) => {
+        if (user) {
+
+            bcryptjs.compare(req.body.password, user.password)
+                .then((result) => {
+                    if (result === true) {
+                        console.log('nice, logged in');
+                        req.session.user = user.userName;
+                        req.session.firstName = user.firstName;
+                        console.log(req.session.user)
+
+                        console.log('sending to my profile');
+                        return res.status(200).redirect('/profile');
+                    } else if (result !== true) {
+
+                        req.session.customError = "Invalid Credentials";
+                        console.log(err)
+                        console.log('ik hoop dat je hier terecht komt')
+                        // reject(new Error('Could not be authenticated'));
+                        return res.render('/login')
+                    } else {
+                        throw 'errorrr';
+                    }
+
+                }).catch((err) => {
+
+
+                    // let errors = req.validationErrors();
+                    // req.session.customError = "Invalid Credentials";
+                    // console.log(err)
+                    // console.log('ik hoop dat je hier terecht komt')
+                    // // reject(new Error('Could not be authenticated'));
+                    // return res.render('/login')
+                })
+        }
+        // else{
+        //     // reject(new Error("User can't be found   "));
+        // }
+    })
+
+
+
+}
 
 module.exports = router;

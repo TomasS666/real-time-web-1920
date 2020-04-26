@@ -4,7 +4,7 @@
     <%if(errors){%>
     <ul class="errors">
       <h2>Your input is not valid yet. We provided a list of possible problems.</h2>
-      <%errors.forEach((elem)=>{%>
+      <% errors.forEach((elem)=>{%>
       <li><%= elem.msg_%></li>
       <%})%>
     </ul>
@@ -12,6 +12,11 @@
   
     <fieldset>
         <legend>Create a new user</legend>
+        <label for="userRole">Visitor / Artist?</label>
+        <select name="userRole" id="userRole">
+          <option value="visitor">Visitor</option>
+          <option value="artist">Artist</option>
+        </select>
         <label for="firstName">First Name</label>
         <input id="firstName" name="firstName" type="text" required placeholder="Enter your first name here">
         <label for="lastName">Last Name</label>
