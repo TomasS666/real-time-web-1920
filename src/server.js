@@ -23,6 +23,7 @@ const fetch = require("node-fetch")
 
 const register = require("./routes/register.js")
 const login = require("./routes/login.js")
+const logout = require("./routes/logout.js")
 
 const home = require("./routes/home.js")
 const show = require("./routes/show.js")(io)
@@ -93,6 +94,7 @@ app
   .use('/show', show)
   .use('/', register)
   .use('/', login)
+  .use('/', logout)
 
 
   
