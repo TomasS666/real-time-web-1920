@@ -2,6 +2,9 @@ const Artist = require('../models/artist.js');
 const bcryptjs = require('bcryptjs');
 const express = require('express');
 const router = express.Router();
+const flash = require('express-flash')
+// Middleware
+const loginValidation = require('../middleware/login-validation.js');
 
 const User = require('../models/User_BASE');
 
@@ -31,7 +34,7 @@ router.get('/login', (req, res) => {
 });
 
 
-router.post('/login', findUser,  (req, res) => {
+router.post('/login', loginValidation, findUser,  (req, res) => {
     console.log('test');
 
   
@@ -104,7 +107,8 @@ function findUser(req, res, next) {
     })
     .catch(err => {
         console.log(err)
-        req.flash('warning', "Please try again")
+        console.log('come here')
+        req.flash('info', 'Please try again')
         res.redirect('/login')
     })
 
