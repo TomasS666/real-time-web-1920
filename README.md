@@ -25,12 +25,17 @@ or you can download the zip file or something similar by clicking on the green b
 ## API
 
 ### Used data
+![Data illustratie](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/First-proces.png)
+![Data illustratie extn. api](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-time.png)
+![Data illustratie show](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-2.png)
+
 
 ## Data manipulation
-
-
-### Limit
-
+* Adding users
+* User roles with different rights
+* Video and audio streaming
+* Realtime show updates
+* User preferences
 
 ## Features
 
@@ -39,14 +44,21 @@ or you can download the zip file or something similar by clicking on the green b
 
 
 ## Wishlist
+* Scalable solution
+* D3 appending a crowd of people 
+* Ticket system, wanted to try Ticketmaster API.
 
 
 ## Known bugs
 
 ## Future features
 
-
 ## Acknowledgements
+Robin, Ramon, Robert, Nick, Laurens, Guido, and possibly others for good ideas, helping with my concept, mental support.
+
+This blog for understanding the barebones of WebRTC, peer connections and how to combine that with Socket.io.
+https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/
+Gonna test it to try the peers, and then write my own logic. Don't worry, I will have to add my whole own strategy because the stream is gonna be a one-side communication.
 
 ## Used dependencies
 
