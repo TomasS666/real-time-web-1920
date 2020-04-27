@@ -71,8 +71,9 @@ function findUser(req, res, next) {
                 .then((result) => {
                     if (result === true) {
                         console.log('nice, logged in');
-                        req.session.user = user.userName;
-                        req.session.firstName = user.firstName;
+                        req.session.user = user.userName
+                        req.session.firstName = user.firstName
+                        req.session.userRole = user.userrole
                         console.log(req.session.user)
 
                         console.log('sending to my profile');
@@ -83,6 +84,7 @@ function findUser(req, res, next) {
                     }
 
                 }).catch((err) => {
+                    console.log(err)
                     req.flash('warning', "Please try again")
                     res.redirect('/login')
 
@@ -101,7 +103,7 @@ function findUser(req, res, next) {
     .catch(err => {
         console.log(err)
         console.log('come here')
-        req.flash('info', 'Please try again')
+        req.flash('warning', 'Please try again')
         res.redirect('/login')
     })
 

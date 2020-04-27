@@ -1,6 +1,7 @@
 <%- include('components/head.ejs') %>
+<%- include('components/header.ejs') %>
 <section id="register">
-  <form action="/register" method="post">
+  <form action="/register" method="post" data-form="login" class="login">
     <%if(errors){%>
     <ul class="errors">
       <h2>Your input is not valid yet. We provided a list of possible problems.</h2>
@@ -12,20 +13,25 @@
   
     <fieldset>
         <legend>Create a new user</legend>
-        <label for="userRole">Visitor / Artist?</label>
+        <label for="userRole">Visitor / Artist?
         <select name="userRole" id="userRole">
           <option value="visitor">Visitor</option>
           <option value="artist">Artist</option>
         </select>
-        <label for="firstName">First Name</label>
-        <input id="firstName" name="firstName" type="text" required placeholder="Enter your first name here">
-        <label for="lastName">Last Name</label>
-        <input id="lastName" name="lastName" type="text" required placeholder="Enter your last name here">
-        <label for="emailaddress">Emailaddress</label>
-        <input id="emailaddress" name="emailaddress" type="email" required placeholder="Enter your e-mailadress here">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required placeholder="Enter a password here">
-      <button id="submit-band" type="submit">Update your profile</button>
+      </label>
+        <label for="firstName">First Name
+          <input id="firstName" name="firstName" type="text" required placeholder="Enter your first name here">
+        </label>
+        <label for="lastName">Last Name
+          <input id="lastName" name="lastName" type="text" required placeholder="Enter your last name here">
+        </label>
+        <label for="emailaddress">Emailaddress
+          <input id="emailaddress" name="emailaddress" type="email" required placeholder="Enter your e-mailadress here">
+        </label>
+        <label for="password">Password
+          <input id="password" name="password" type="password" required placeholder="Enter a password here">
+        </label>
+        <button class="primary" type="submit">Create Account</button>
    </fieldset>
   </form>
 </section>

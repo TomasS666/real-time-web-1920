@@ -30,21 +30,24 @@ footer{
 }
 
 
-section#login{
+section#login,
+section#register{
     display: flex;
-    align-items: center;
+    align-items: self-start;
     height: 100vh;
 }
 
-#login legend{
+form.login legend{
     color: #fff;
+    padding: 2rem 0rem;
+    font-size: 1.5rem;
 }
 
-#login fieldset{
+form.login fieldset{
     padding: 4rem;
 }
 
-#login label{
+form.login label:not(:first-of-type){
     margin: 2rem 0;
     display: block;
 }
@@ -81,7 +84,7 @@ input:valid{
     border-bottom: 1px solid #78DE6C;
 }
 
-#login button{
+button.primary{
     background-color: #92CBC5;
     padding: 1rem 4rem;
     color: #000;
@@ -90,7 +93,8 @@ input:valid{
     font-weight: bold;
 }
 
-form[data-form="login"]{
+form[data-form="login"],
+form[data-form="register"]{
     max-width: 35rem;
     margin: 0 auto;
 }

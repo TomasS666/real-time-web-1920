@@ -1,6 +1,8 @@
 <%- include('components/head.ejs') %>
+
+<%- include('components/header.ejs') %>
 <section id="login">
-  <form action="/login" method="post" data-form="login">
+  <form action="/login" method="post" data-form="login" class="login">
     <%if(customMessage){%>
       <p><%= customMessage_%></p>
     <%}%>
@@ -19,13 +21,16 @@
         <ul>
         <%
           for(let i = 0; i < messages.warning.length; i++){
+            if(messages.warning.msg){ %>
+              <%= messages.warning[i].msg%>
+           <% }else{
         %>
-          <%= messages.warning[i].msg%>
-      <% }
+        <%= messages.warning[i] %>
+      <% }}
       %></ul>
 
       <% } else{%>
-        <%= messages.info %>
+        <%= messages.warning %>
       <%}%>
     <%
     } %>
@@ -39,7 +44,7 @@
         <label for="password">Password
           <input id="password" name="password" type="password" required placeholder="Enter a password here">
         </label>
-      <button class="btn --primary" type="submit">Login</button>
+      <button class="primary" type="submit">Login</button>
    </fieldset>
   </form>
 </section>
