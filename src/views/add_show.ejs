@@ -1,0 +1,30 @@
+<%- include('components/head.ejs') %>
+<%- include('components/header.ejs') %>
+<section id="register">
+  <form action="/add-show" method="post" class="login">
+    <%if(typeof errors !== 'undefined'){%>
+    <ul class="errors">
+      <h2>Your input is not valid yet. We provided a list of possible problems.</h2>
+      <% errors.forEach((elem)=>{%>
+      <li><%= elem.msg_%></li>
+      <%})%>
+    </ul>
+    <%}%>
+  
+    <fieldset>
+        <legend>Create a new show</legend>
+     
+        <label for="title">Title
+          <input id="title" name="title" type="text" required placeholder="Enter the title here">
+        </label>
+        <label for="genres">Genres
+          <select name="genres" id="genres">
+              <option value="Metal">Metal</option>
+              <option value="Reggae">Reggae</option>
+          </select>
+        </label>
+        <button class="primary" type="submit">Create Show</button>
+   </fieldset>
+  </form>
+</section>
+<%- include('components/footer.ejs') %>

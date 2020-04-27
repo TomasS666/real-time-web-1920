@@ -8,7 +8,10 @@ const Show = require('./show');
 
 const Visitor = User.discriminator('Visitor', new mongoose.Schema({
   shows: {
-      visited: [Show],
+      visited: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Show'
+      }],
       upcoming: {
           type: Array, 
           required: false

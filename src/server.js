@@ -27,6 +27,7 @@ const logout = require("./routes/logout.js")
 
 const home = require("./routes/home.js")
 const show = require("./routes/show.js")(io)
+const addShow = require("./routes/add_show.js")(io)
 const profile = require("./routes/profile.js")
 
 
@@ -92,6 +93,7 @@ app
   .use('/', home)
   .use('/', profile)
   .use('/show', show)
+  .use('/', addShow)
   .use('/', register)
   .use('/', login)
   .use('/', logout)

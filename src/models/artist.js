@@ -4,10 +4,13 @@ const Schema = mongoose.Schema;
 
 const User = require('./User_BASE')
 
-const Show = require('./show');
+// const Show = require('./show');
 
 const Artist = User.discriminator('Artist', new mongoose.Schema({
-    shows: [Show],
+    shows: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Show'
+    }],
     genres: [String]
   })
 )
