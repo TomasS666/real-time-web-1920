@@ -136,9 +136,10 @@ app
 
 
 mongoose
-  .connect(process.env.dbUrl, {
+  .connect(process.env.localDB, {
+    connectWithNoPrimary: true,
       useCreateIndex: true,
-      useUnifiedTopology: true,
+      // useUnifiedTopology: true,
       useNewUrlParser: true,
   })
   .then(() => console.log('DB Connected!'))

@@ -28,12 +28,33 @@ function checkUserRole(req, res, next){
       scripts: ['socket.io.js','add_show.js']
   })
   }else{
-    res.render("profile.ejs", {
-      title: "Welcome",
-      session: req.session,
-      scripts: ['socket.io.js','add_show.js']
-  })
+
+    
+
+getShows(req, res, next)
+
+
+  //   res.render("profile.ejs", {
+  //     title: "Welcome",
+  //     session: req.session,
+  //     shows: shows,
+  //     scripts: ['socket.io.js','add_show.js']
+  // })
   }
+}
+
+
+async function getShows(req, res, next) {
+  const shows = await Show.find({})
+
+  console.log(shows)
+
+  res.render("profile.ejs", {
+    title: "Welcome",
+    session: req.session,
+    shows: shows,
+    scripts: ['socket.io.js','add_show.js']
+  })
 }
 
 function isLoggedIn(req, res, next){

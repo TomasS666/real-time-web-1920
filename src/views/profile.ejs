@@ -10,7 +10,28 @@
  <body>
    <div class="container">
     <%-include('components/header.ejs', {title: title, session:session}) %>
-    <a href="/show">Join show</a>
+    
+    
+    <% if(typeof shows != 'undefined') { 
+      for(let i = 0; i < shows.length; i++) {%>
+        <h2><%= shows[i].name %></h2>
+        <% if (typeof shows[i].genres != 'undefined') { 
+          for(let y = 0; y < shows[i].genres.length; y++) {
+            
+          %>
+              <div><%= shows[i].genres[y] %></div>
+
+      <%  }
+     }
+      
+    } %>
+
+        <a href="/show">Join show</a>
+    <% } %>
+   
+
+
+
 
    <%-include('components/footer.ejs') %>
  </body>

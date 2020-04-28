@@ -19,8 +19,13 @@ router.get('/add-show', (req, res, next)=>{
 
 router.post('/add-show', (req, res, next)=>{
 
-    Show.watch().
-    on('change', data => console.log(new Date(), data));
+            Show.watch().
+        on('change', data => {
+            console.log(new Date(), data)
+
+            // socket.broadcast.emit()
+            
+        });
 
 
     const newShow = new Show({ 
@@ -34,7 +39,7 @@ router.post('/add-show', (req, res, next)=>{
         console.log(doc)
     });
 
-    Artist.findOne({ userName:req.session.user }, async function(err, artist){
+    Artist.findOne({ userName: req.session.user }, async function(err, artist){
         if(err){
             console.log(err)
         }else{
@@ -51,13 +56,22 @@ module.exports = function(io){
     let activeSockets = []
     io.on("connection", (socket) => {
 
+        Show.watch().
+        on('change', data => {
+            console.log(new Date(), data.fullDocument)
 
-        socket.on('add show', (data) => {
-            console.log('data:', data)
-            socket.broadcast.emit("show added", {
-                      data: data
+            socket.broadcast.emit("client show added", {
+                data: data.fullDocument
             });
-        })
+            
+        });
+
+        // socket.on('add show', (data) => {
+        //     console.log('data:', data)
+        //     socket.broadcast.emit("client show added", {
+        //               data: data
+        //     });
+        // })
     
     //   console.log(`Socket ${socket.id} connected`)
     

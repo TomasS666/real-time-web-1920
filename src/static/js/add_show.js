@@ -22,7 +22,7 @@ window.onload = function(){
     }
 
 
-    socket.on('show added', (data)=>{
+    socket.on('client show added', (data)=>{
         console.log(data.data.data)
         console.log(data)
         for (var [key, value] of data.data.data.entries()) { 
