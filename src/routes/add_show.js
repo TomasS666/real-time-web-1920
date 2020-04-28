@@ -6,6 +6,8 @@ const mongoose = require('mongoose')
 const Show = require('../models/show.js')
 const Artist = require('../models/artist.js')
 
+const User = require('../models/User_BASE.js')
+
 router.get('/add-show', (req, res, next)=>{
 
     res.render("add_show.ejs", {
@@ -16,6 +18,10 @@ router.get('/add-show', (req, res, next)=>{
 
 
 router.post('/add-show', (req, res, next)=>{
+
+    Show.watch().
+    on('change', data => console.log(new Date(), data));
+
 
     const newShow = new Show({ 
         name: req.body.title, 
