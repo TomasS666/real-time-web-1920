@@ -136,7 +136,7 @@ app
 
 
 mongoose
-  .connect(process.env.localDB, {
+  .connect(process.env.dbUrl, {
       useCreateIndex: true,
       useUnifiedTopology: true,
       useNewUrlParser: true,
