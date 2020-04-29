@@ -29,7 +29,7 @@ function getRenderedShows(parent, node){
 
 function insertShow(show){
     const showsContainer = document.querySelector("#shows")
-    let genres = null
+    let genres = ''
 
     if(show.genres.length){
         
