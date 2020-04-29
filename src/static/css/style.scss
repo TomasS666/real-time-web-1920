@@ -1,0 +1,237 @@
+// Colors
+$white: #ffffff;
+$black: #000;
+
+$primary-bg: #303030;
+$primary-txt: $white;
+
+$link: rgba(255, 255, 255, 0.9);
+$link-hover: rgba(255, 255, 255, 1);
+
+
+
+*{
+    box-sizing: border-box;
+}
+
+html, body{
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, sans-serif;
+    font-size: 100%;
+    background-color: #303030;
+    /* Photo by Lee Blanchflower on Unsplash */
+    background-size: 100vw 100vh;
+    background-repeat: no-repeat;
+    background-image: url('../images/lee-blanchflower-1dW1vEJLlCQ-unsplash.jpg');
+}
+
+header, 
+main, 
+footer{
+    max-width: 90vw;
+    margin: 0 auto;
+}
+
+header{
+    max-width: 90vw;
+    overflow: auto;
+    margin: 4.125rem 0 0;
+}
+
+nav.primary{
+    width: 100%;
+    background-color: $primary-bg;
+    position: fixed;
+    top: 0;
+    left: 0;
+    ul{
+        padding: 0 5rem;
+        margin: 0;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        li{
+            list-style-type: none;
+            a{
+                color: $link;
+                display: inline-block;
+                padding: 1.5rem;
+                min-width: 10rem;
+                text-align: center;
+                &:hover{
+                    color: $link-hover;
+                }
+            }
+        }
+    }
+}
+
+.message{
+    padding: 1rem;
+}
+
+.error{
+    color: red;
+}
+
+ul.errors{
+    background-color:#bd0000;
+    li{
+        color: #fff;
+        padding: 1rem;
+    }
+}
+
+
+section#login,
+section#register{
+    display: flex;
+    align-items: self-start;
+    height: 100vh;
+}
+
+form.login legend{
+    color: #fff;
+    padding: 2rem 0rem;
+    font-size: 1.5rem;
+}
+
+form.login fieldset{
+    padding: 4rem;
+}
+
+form.login label:not(:first-of-type){
+    margin: 2rem 0;
+    display: block;
+}
+/* Chat form */
+
+fieldset{
+    margin: 0;
+    border: 0;
+}
+
+input, select, option{
+    padding: .5rem;
+    font-size: 1rem;
+}
+
+label{
+    margin: .5rem 0;
+    font-size: .75rem;
+}
+
+input{
+    background-color:transparent;
+    color: #fff;
+    border: none;
+    border-bottom: 1px solid #fff;
+}
+
+input:focus{
+    outline: none;
+    border-bottom: 1px solid #78DE6C;
+}
+
+input:valid{
+    border-bottom: 1px solid #78DE6C;
+}
+
+button.primary{
+    background-color: #92CBC5;
+    padding: 1rem 4rem;
+    color: #000;
+    border: none;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+form[data-form="login"],
+form[data-form="register"]{
+    max-width: 35rem;
+    margin: 0 auto;
+}
+
+option:checked{
+    background-color: blue;
+    color: #fff;
+}
+
+input {
+    resize: none;
+    width: 100%;
+}
+
+form{
+    background-color: #303030;
+}
+
+label{
+    color: rgba(255, 255, 255, .54)
+}
+
+form#chat{
+    position: fixed;
+    top: 0;
+    
+}
+
+#chat fieldset{
+    width: 100%;
+    left: 0;
+    position: fixed;
+}
+
+#chat fieldset[name="lang"]{
+    top: 0;
+}
+
+fieldset[name="message"]{
+    bottom: 0;
+}
+
+fieldset[name="lang"] div.flex{
+    flex-direction: column;
+}
+
+#messages{
+    margin-top: 104px;
+    margin-bottom: 66px;
+}
+
+
+fieldset div.flex{
+    display: flex;
+}
+
+fieldset[name="message"] div.flex button{
+    min-width: 6rem;
+    font-weight: bold;
+    border: none;
+}
+
+/* fieldset[name="message"] div.flex input:valid ~ button{
+    background-color: #0175d8;
+    color: #fff;
+} */
+
+input,
+input::placeholder{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+@media screen and (max-width: 40rem){
+    nav.primary{
+        ul{
+            padding: 0;
+            li{
+                a{
+                    min-width: unset;
+                }
+            }
+        }
+    }
+}

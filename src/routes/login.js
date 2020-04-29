@@ -15,6 +15,7 @@ router.get('/login', (req, res) => {
      *   It redirects you to /my-profile where the my profile route is handled.
      */
     if (req.session.user) {
+        console.log("Already logged in")
         return res.redirect('/profile');
     }
 
@@ -35,12 +36,6 @@ router.get('/login', (req, res) => {
 
 
 router.post('/login', loginValidation, findUser,  (req, res) => {
-    console.log('test');
-
-  
-
-
-  
   
 });
 
@@ -71,9 +66,12 @@ function findUser(req, res, next) {
                 .then((result) => {
                     if (result === true) {
                         console.log('nice, logged in');
-                        req.session.user = user.userName
-                        req.session.firstName = user.firstName
-                        req.session.userRole = user.userrole
+                        // req.session.user = user.userName
+                        // req.session.firstName = user.firstName
+                        // req.session.userRole = user.userrole
+
+                        req.session.user = user
+                        delete req.session.user.password
                         console.log(req.session.user)
 
                         console.log('sending to my profile');

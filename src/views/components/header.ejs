@@ -1,22 +1,18 @@
 <body>
-<header class="header">
 
-    <% if(typeof title != 'undefined'){ %>
-        <%= title -%>
-   <% } %>
 <% if(typeof session != 'undefined'){ %>
-
-
      <%-include('menus/artist_menu.ejs') %>
-     Welcome <%= session.firstName %>
-  
+     <header class="header">
+          <h1>Overview</h1>
+          Welcome <%= session.firstName %>
+     </header>
 <% }else{%>
-
-
      <%-include('menus/main_menu.ejs') %>
-
+     <header class="header">
+          <h1>Sign in or sign up</h1>
+     </header>
 <% } %>
 
 
-</header>
+
 

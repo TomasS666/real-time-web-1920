@@ -27,8 +27,13 @@ const logout = require("./routes/logout.js")
 
 const home = require("./routes/home.js")
 const show = require("./routes/show.js")(io)
-const addShow = require("./routes/add_show.js")(io)
-const profile = require("./routes/profile.js")
+const addShow = require("./routes/artist/add_show.js")(io)
+const profile = require("./routes/visitor/overview.js")
+
+
+const isLoggedIn = require('./middleware/is-logged-in')
+
+const ejs = require("ejs")
 
 
 
@@ -48,6 +53,7 @@ app
     resave: false
   }))
   .use(flash())
+
   // .use(partials())
   .set('view-engine', 'ejs')
   .set('views', path.join(__dirname, 'views'))

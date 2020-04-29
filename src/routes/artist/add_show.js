@@ -3,12 +3,15 @@ const router = express.Router();
 const path = require('path')
 
 const mongoose = require('mongoose')
-const Show = require('../models/show.js')
-const Artist = require('../models/artist.js')
+const Show = require('../../models/show.js')
+const Artist = require('../../models/artist.js')
 
-const User = require('../models/User_BASE.js')
+// middleware
+const isLoggedIn = require('../../middleware/is-logged-in')
 
-router.get('/add-show', (req, res, next)=>{
+const User = require('../../models/User_BASE.js')
+
+router.get('/add-show', isLoggedIn, (req, res, next)=>{
 
     res.render("add_show.ejs", {
       scripts: ['socket.io.js','add_show.js']
@@ -17,38 +20,61 @@ router.get('/add-show', (req, res, next)=>{
 })
 
 
-router.post('/add-show', (req, res, next)=>{
+router.post('/add-show', isLoggedIn, (req, res, next)=>{
 
-            Show.watch().
-        on('change', data => {
-            console.log(new Date(), data)
+        //     Show.watch().
+        // on('change', data => {
+        //     console.log(new Date(), data)
 
-            // socket.broadcast.emit()
+        //     // socket.broadcast.emit()
             
-        });
+        // });
 
 
-    const newShow = new Show({ 
-        name: req.body.title, 
-        genre: req.body.genres
-    })
+    
 
-    console.log(newShow)
+   
 
-    newShow.save((error, doc) => {
-        console.log(doc)
-    });
+    // newShow.save((error, doc) => {
+    //     console.log(doc)
+    // });
 
-    Artist.findOne({ userName: req.session.user }, async function(err, artist){
+    Artist.findOne({ userName: req.session.user.userName }, async function(err, artist){
         if(err){
             console.log(err)
         }else{
+
+            console.log(artist)
+
+            // Save show with reference id to artist
+            const newShow = new Show({ 
+                artist: artist._id,
+                name: req.body.title, 
+                genres: req.body.genres
+            })
+
+            // Save show
+            newShow.save((error, doc) => {
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log(doc)
+                }
+            });
+
             console.log("artist", artist)
+            
+            // Add show reference to artist shows array
+
             artist.shows.push(newShow._id)
 
             return await artist.save()
         }
     }).then( res.redirect('/profile'))
+      .catch(err => {
+          console.log(err)
+          res.redirect('/profile')
+      })
     
 })
 
@@ -58,11 +84,22 @@ module.exports = function(io){
 
         Show.watch().
         on('change', data => {
-            console.log(new Date(), data.fullDocument)
+            console.log(new Date(), data)
 
-            socket.broadcast.emit("client show added", {
-                data: data.fullDocument
-            });
+            if(data.operationType == "insert"){
+                // socket.on('add show', (data) => {
+                    console.log("Document inserted")
+                    socket.emit("client show added", {
+                        data: data.fullDocument
+                    });
+                // })
+            }else if(data.operationType == "update"){
+                socket.broadcast.emit("client show updated", {
+                    data: data.fullDocument
+                });
+            }
+
+            
             
         });
 

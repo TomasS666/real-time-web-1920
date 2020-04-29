@@ -18,14 +18,14 @@
 
     <%if(typeof messages != "undefined"){%>
       <%if(Array.isArray(messages.warning)){ %>
-        <ul>
+        <ul class="errors">
         <%
           for(let i = 0; i < messages.warning.length; i++){
             if(messages.warning.msg){ %>
-              <%= messages.warning[i].msg%>
+             <li><%= messages.warning[i].msg%></li>
            <% }else{
         %>
-        <%= messages.warning[i] %>
+        <li><%= messages.warning[i] %></li>
       <% }}
       %></ul>
 
