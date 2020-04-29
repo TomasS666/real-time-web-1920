@@ -20,7 +20,8 @@ or you can download the zip file or something similar by clicking on the green b
 
 
 ## Concept
-
+Your two year concert tour got canceled because a global pandemic? No problem, we got you covered with this new Realtime webapp, a central place to host your events online. Register, add your upcoming shows, edit shows, and interact via a live stream with your audience. 
+You can even see your audience crowd growing live. This way, you could be anywhere and be safe, yet be closer to your fans than ever before. 
 
 ## API
 
@@ -34,8 +35,9 @@ or you can download the zip file or something similar by clicking on the green b
 * Adding users
 * User roles with different rights
 * Video and audio streaming
-* Realtime show updates
+* Realtime show updates with change streams
 * User preferences
+* Artist / genre following for show recommendations
 
 ## Features
 
@@ -44,6 +46,8 @@ or you can download the zip file or something similar by clicking on the green b
 
 
 ## Wishlist
+* Editing shows
+* Show countdown
 * Scalable solution
 * D3 appending a crowd of people 
 * Ticket system, wanted to try Ticketmaster API.
