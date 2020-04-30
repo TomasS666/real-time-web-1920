@@ -50,7 +50,8 @@ router.post('/add-show', isLoggedIn, (req, res, next)=>{
             const newShow = new Show({ 
                 artist: artist._id,
                 name: req.body.title, 
-                genres: req.body.genres
+                genres: req.body.genres,
+                date: new Date()
             })
 
             // Save show

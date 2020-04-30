@@ -1,7 +1,7 @@
-window.addEventListener('offline', function(event){
-    console.log("You lost connection.");
-    socket.disconnect();
-});
+// window.addEventListener('offline', function(event){
+//     console.log("You lost connection.");
+//     socket.disconnect();
+// });
 
 const socket = io()
 
@@ -40,6 +40,7 @@ getShows()
         return string.json()
     })
     .then(json => {
+        console.log(json)
         update(json)
 
         shows = json
@@ -47,66 +48,141 @@ getShows()
             console.log(data.data)
 
             // Why does unshift not work as expected?
-            shows.push(data.data)
+            shows.unshift(data.data)
             console.log(shows)
             update(shows)
         })
     })
 
+
+// const test = [{name: 'Tomas'}, {name: 'Marcella'}, {name: 'Wim'}]
+
+// update(test)
 function update(json){
 
-    console.log('updating')
-    d3
-    .select('#shows')
 
-    .selectAll('article')
-        .data(json)
-        .join(
-            function(enter){
-                console.log('Enter')
 
-                const article = enter.append('article').style('opacity', 0)
-                    
-                article.append('h3')
-                    .text(function(d){
-                        return d.name
-                    });
-               
-                article.selectAll('div')
-                        .data(d => d.genres)
-                            .join(
-                                function(enter){
-                                    return enter
-                                        .append('div')
-                                        .text( d => d )
-                                }
-                            );
-                     
-                article
-                    .append('a')
-                    .attr('href', function(d){
-                        return '/show'
-                    })
-                    .text('join show')
+    const container = d3.select('#shows')
+    const articles = container.selectAll('article')
+    
 
-                return article.lower()
+    articles
+    .data(json)
+    .style('transform', 'scale(0)')
+        .select('h3')
+        .text(d => d.name);
+    articles.transition().delay((d, i)=>{
+        console.log(i * 10)
+        return i * 400
+    })
+    .duration(1000)
+        .style('transform', 'scale(1)')
+        // .style('padding', '1rem')
 
-            },
-            function(update){
-                return update
-            },
-            function(exit){
-                return exit
-            }
-        ).transition()
-        .delay((d, i)=>{
-            return i * 100;
+
+    articles
+    .data(json)
+        .select('div')
+        .text(d => {
+            console.log(d)
+            return d.genres.join(', ')
         })
-        .duration(200)
+    articles
+    .data(json)
+    .enter()
+        .append('article')
+        // .style('height', '0%')
+        // .style('padding', '0')
+        .append('h3')
+        .text(d => d.name)
+
+        .append('div')
+        .text(d => {
+            
+            return d.genres.join(', ')
+        })
+
+
+        // container.selectAll('article').transition()
+        // .delay((d, i)=>{
+        //     console.log(i * 10)
+        //     return i * 400
+        // })
+        // .duration(1000)
+        // .style('height', '100%')
+        // .style('padding', '1rem')
+
+
+    articles.data(json).exit().remove()
         
-        .style("opacity", 1);
+
+    // console.log('updating')
+    // d3
+    // .select('#shows')
+
+    // .selectAll('article')
+    //     .data(json)
+    //     .join(
+    //         function(enter){
+    //             console.log('Enter')
+
+    //             const article = enter.append('article').style('opacity', 0)
+                    
+    //             article.append('h3')
+    //                 .text(function(d){
+    //                     return d.name
+    //                 });
+               
+    //             article.selectAll('div')
+    //                     .data(d => d.genres)
+    //                         .join(
+    //                             function(enter){
+    //                                 return enter
+    //                                     .append('div')
+    //                                     .text( d => d )
+    //                             }
+    //                         );
+                     
+    //             article
+    //                 .append('a')
+    //                 .attr('href', function(d){
+    //                     return '/show'
+    //                 })
+    //                 .text('join show')
+
+    //             return article.lower()
+
+    //         },
+    //         function(update){
+    //             const article = update.select('article').select('h3').text(function(d){
+    //                 return d.name
+    //             });
+
+    //             article.selectAll('div')
+    //             .data(d => d.genres)
+    //                 .join(
+    //                     function(enter){
+    //                         return enter
+    //                             .append('div')
+    //                             .text( d => d )
+    //                     }
+    //                 );
+
+    //                 return article
+    //         },
+    //         function(exit){
+    //             return exit.remove()
+    //         }
+    //     ).transition()
+    //     .delay((d, i)=>{
+    //         return i * 100;
+    //     })
+    //     .duration(200)
+        
+    //     .style("opacity", 1);
 
 }
+
 
 
 

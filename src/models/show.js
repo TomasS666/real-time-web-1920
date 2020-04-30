@@ -9,7 +9,8 @@ const Show = new Schema({
         ref: 'Artist'
     },
     name : String, 
-    genres : [String]
+    genres : [String],
+    date: Date
 });
 
 
