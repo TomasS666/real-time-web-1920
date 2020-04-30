@@ -30,6 +30,7 @@ const show = require("./routes/show.js")(io)
 const addShow = require("./routes/artist/add_show.js")(io)
 const profile = require("./routes/visitor/overview.js")
 
+const shows = require("./routes/API/shows")
 
 const isLoggedIn = require('./middleware/is-logged-in')
 
@@ -103,7 +104,8 @@ app
   .use('/', register)
   .use('/', login)
   .use('/', logout)
-
+  .use('/', shows)
+  
 
   
 

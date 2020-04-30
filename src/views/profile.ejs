@@ -13,8 +13,12 @@
     <main>
           <section id="shows">
             <h2>Aanbevolen shows</h2>
-    
-    <% if(typeof shows != 'undefined') { 
+            <!-- <article>
+              <h2>..loading</h2>
+            </article> -->
+
+
+            <% /* %><% if(typeof shows != 'undefined') { 
       for(let i = 0; i < shows.length; i++) {%>
         <article>
         <h3><%= shows[i].name %></h3>
@@ -31,12 +35,14 @@
    <% } %>
 
         
-    <% } %>
+    <% } %><% */ %>
    
   </section>
 
 
         </main>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+
    <%-include('components/footer.ejs') %>
    
  </body>

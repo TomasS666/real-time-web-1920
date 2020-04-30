@@ -82,13 +82,27 @@ module.exports = function(io){
     let activeSockets = []
     io.on("connection", (socket) => {
 
+        console.time("dbcount")
+        Show.countDocuments().then(count => {
+            console.log(count)
+        
+        console.timeEnd("dbcount")
+
+        })
+
         Show.watch().
         on('change', data => {
             console.log(new Date(), data)
 
             if(data.operationType == "insert"){
                 // socket.on('add show', (data) => {
+
                     console.log("Document inserted")
+
+                    delete data.fullDocument['_id']
+                    delete data.fullDocument['__v']
+
+                    console.log(data.fullDocument)
                     socket.emit("client show added", {
                         data: data.fullDocument
                     });
