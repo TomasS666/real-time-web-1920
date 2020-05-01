@@ -25,10 +25,23 @@ You can even see your audience crowd growing live. This way, you could be anywhe
 
 ## API
 
-### Used data
+### Data Lifecycle (DLC)
 ![Data illustratie](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/First-proces.png)
 ![Data illustratie extn. api](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-time.png)
 ![Data illustratie show](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-2.png)
+
+### Socket events
+#### Artist events
+* Add show
+* 
+#### Visitor events
+* Join room
+* Show added 
+* Show update
+
+#### Server events
+
+###
 
 
 ## Data manipulation
@@ -64,7 +77,7 @@ This blog for understanding the barebones of WebRTC, peer connections and how to
 https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/
 Gonna test it to try the peers, and then write my own logic. Don't worry, I will have to add my whole own strategy because the stream is gonna be a one-side communication.
 
-Big props for this guy, for getting my replica set up and running localy. Was a pain at first, but because of this tutorial I totally got it: 
+Big props for r2schools, for getting my mongodb replica set up and running localy. Was a pain at first, but because of this tutorial I totally got it: 
 
 [Tutorial](https://www.youtube.com/watch?v=bJo7nr9xdrQ)  
 [His Youtube Channel](https://www.youtube.com/channel/UCjMKqt0sYMkBEfFg4YtqUdg)
