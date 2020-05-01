@@ -66,7 +66,7 @@ Gonna test it to try the peers, and then write my own logic. Don't worry, I will
 
 Big props for this guy, for getting my replica set up and running localy. Was a pain at first, but because of this tutorial I totally got it: 
 
-[Tutorial](https://www.youtube.com/watch?v=bJo7nr9xdrQ)
+[Tutorial](https://www.youtube.com/watch?v=bJo7nr9xdrQ)  
 [His Youtube Channel](https://www.youtube.com/channel/UCjMKqt0sYMkBEfFg4YtqUdg)
 
 ## Used dependencies
