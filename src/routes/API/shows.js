@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path')
 const Show = require('../../models/show')
+const isLoggedIn = require('../../middleware/is-logged-in')
 // const serverSetup = require("../server-setup")
 // const http = serverSetup.http
 // const io = serverSetup.io
@@ -10,7 +11,7 @@ const Show = require('../../models/show')
 
 
 
-router.get('/shows', (req, res, next)=>{
+router.get('/shows', isLoggedIn, (req, res, next)=>{
 
 // Based on this source, for a better understanding 
 // Gonna test it to try the peers, and then write my own logic  
