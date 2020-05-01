@@ -1,6 +1,6 @@
 # Real-Time Web @cmda-minor-web · 2019-2020
 
-### Demo: {link}
+### Demo: {soon here, deployed, but under maintenance}
 
 ## Table of contents
   
@@ -63,6 +63,11 @@ Robin, Ramon, Robert, Nick, Laurens, Guido, and possibly others for good ideas, 
 This blog for understanding the barebones of WebRTC, peer connections and how to combine that with Socket.io.
 https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/
 Gonna test it to try the peers, and then write my own logic. Don't worry, I will have to add my whole own strategy because the stream is gonna be a one-side communication.
+
+Big props for this guy, for getting my replica set up and running localy. Was a pain at first, but because of this tutorial I totally got it: 
+
+[Tutorial](https://www.youtube.com/watch?v=bJo7nr9xdrQ)
+[His Youtube Channel](https://www.youtube.com/channel/UCjMKqt0sYMkBEfFg4YtqUdg)
 
 ## Used dependencies
 
