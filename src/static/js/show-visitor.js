@@ -96,6 +96,12 @@ socket.on("disconnectPeer", () => {
   peerConnection.close();
 });
 
+
+socket.on('test', (data)=>{
+  console.log(data)
+  console.log("what")
+})
+
 window.onunload = window.onbeforeunload = () => {
   socket.close();
 };

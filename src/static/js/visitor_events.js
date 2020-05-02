@@ -26,6 +26,7 @@ const socket = io()
     })
 
 
+
 // }
 
 
@@ -103,6 +104,11 @@ function update(json){
             console.log('enter')
             return d.genres.join(', ')
         })
+        .append('a')
+        .attr('href', d => {
+            return `/show/visitor/${d.room_id}`
+        })
+        .text('join')
 
 
         // container.selectAll('article').transition()

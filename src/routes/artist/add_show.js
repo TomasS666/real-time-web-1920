@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const path = require('path')
 
+const uuid = require('uuid')
+
 const mongoose = require('mongoose')
 const Show = require('../../models/show.js')
 const Artist = require('../../models/artist.js')
@@ -51,7 +53,8 @@ router.post('/add-show', isLoggedIn, (req, res, next)=>{
                 artist: artist._id,
                 name: req.body.title, 
                 genres: req.body.genres,
-                date: new Date()
+                date: new Date(),
+                room_id: uuid.v1()
             })
 
             // Save show

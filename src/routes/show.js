@@ -7,7 +7,7 @@ const path = require('path')
 //   if(req.)
 // }
 
-router.get('/', (req, res, next)=>{
+router.get('/:id?', setRoom, (req, res, next)=>{
 
 // Based on this source, for a better understanding 
 // Gonna test it to try the peers, and then write my own logic  
@@ -19,7 +19,7 @@ router.get('/', (req, res, next)=>{
     
 })
 
-router.get('/visitor', (req, res, next)=>{
+router.get('/visitor/:id?', setRoom, (req, res, next)=>{
 
   // Based on this source, for a better understanding 
   // Gonna test it to try the peers, and then write my own logic  
@@ -31,184 +31,71 @@ router.get('/visitor', (req, res, next)=>{
       
   })
 
-module.exports = function(io){
-    // let activeSockets = []
-    // io.on("connection", (socket) => {
-    
-    //   console.log(`Socket ${socket.id} connected`)
-    
-    
-    //   const existingSocket = activeSockets.find(existingSocket => {
-    //     return existingSocket === socket.id
-    //   });
-    
-    //   console.log(existingSocket)
-    
-    //   if(!existingSocket){
-    //     socket.broadcast.emit("client joined room", {
-    //       user: socket.id
-    //     })
-    //   }
-    //   // if (!existingSocket) {
-    //   //   activeSockets.push(socket.id);
-    //   //   console.log(activeSockets)
-    //   //   socket.emit("update-user-list", {
-    //   //     users: activeSockets.filter(existingSocket => {
-    //   //       return existingSocket !== socket.id
-    //   //     })
-    //   //   });
-    
-    //   //   socket.broadcast.emit("update-user-list", {
-    //   //     users: [socket.id]
-    //   //   });
-    //   // }
-    
-    //   socket.on("disconnect", () => {
-    //     activeSockets = activeSockets.filter(existingSocket => {
-    //       return existingSocket !== socket.id
-    //     });
-    //     console.log(activeSockets)
-    //     socket.broadcast.emit("remove-user", {
-    //       socketId: socket.id
-    //     });
-    //   });
-    
-    //   socket.on("call-user", data => {
-    //     console.log('Calling user');
-    //     socket.to(data.to).emit("call-made", {
-    //       offer: data.offer,
-    //       socket: socket.id
-    //     });
-    //   });
-    
-  
-    
-    //   socket.on("make-answer", data => {
-    //     console.log("Making answer");
-    //     socket.to(data.to).emit("answer-made", {
-    //       socket: socket.id,
-    //       answer: data.answer
-    //     });
-    //   });
-    
-    // })
 
+let room = null
 
+function setRoom(req, res, next) {
+  if(req.params.id){
+    room = `room ${req.params.id}`
+    console.log(room)
+    return next()
+  }else{
+    console.log(req.id)
+  }
+}
 
-
-
-
-    // let activeSockets = []
-
-    // console.log(activeSockets)
-    // io.on("connection", (socket) => {
-    
-    //   console.log(`Socket ${socket.id} connected`)
-    
-    
-    //   const existingSocket = activeSockets.find(existingSocket => {
-    //     return existingSocket === socket.id
-    //   });
-    
-    //   console.log(existingSocket)
-    
-    //   // if (!existingSocket) {
-    //   //   activeSockets.push(socket.id);
-    //   //   console.log(activeSockets)
-    //   //   socket.emit("update-user-list", {
-    //   //     users: activeSockets.filter(existingSocket => {
-    //   //       return existingSocket !== socket.id
-    //   //     }),
-    //   //     newlyAdded: 'test'
-    //   //   });
-    
-    //   //   socket.broadcast.emit("update-user-list", {
-    //   //     users: [socket.id]
-    //   //   });
-    //   // }
-
-    //   if(!existingSocket){
-    //     socket.broadcast.emit("client joined room", {
-    //       user: socket.id
-    //     })
-    //   }
-    
-    //   socket.on("disconnect", () => {
-    //     activeSockets = activeSockets.filter(existingSocket => {
-    //       return existingSocket !== socket.id
-    //     });
-    //     console.log(activeSockets)
-    //     socket.broadcast.emit("remove-user", {
-    //       socketId: socket.id
-    //     });
-    //   });
-    
-    //   socket.on("call-user", data => {
-    //     console.log('Calling user');
-    //     socket.to(data.to).emit("call-made", {
-    //       offer: data.offer,
-    //       socket: socket.id
-    //     });
-    //   });
-    
-    
-    //   socket.on("make-answer", data => {
-    //     console.log("Making answer");
-    //     socket.to(data.to).emit("answer-made", {
-    //       socket: socket.id,
-    //       answer: data.answer
-    //     });
-    //   });
-    
-    // })
-
-
-
-
-
-
-
-    // new test
-
-
+function sockets(io){
+   
+  console.log(router.stack[0].keys[0])
 
     let activeSockets = []
+    let hosts = []
 
     console.log(activeSockets)
     
     let broadcaster
 
     io.sockets.on("connection", socket => {
+    
+      socket.join(room)
+
+      
+      io.to(room).emit('test', room);
+
+
+
       socket.on("broadcaster", () => {
         broadcaster = socket.id;
-        socket.broadcast.emit("broadcaster");
+        console.log('broadcaster', broadcaster);
+        hosts.push(broadcaster);
+        console.log(hosts)
+        // socket.broadcast.emit("broadcaster");
+        io.to(room).emit('broadcaster')
       });
       socket.on("watcher", () => {
-        socket.to(broadcaster).emit("watcher", socket.id);
+        // socket.to(broadcaster).emit("watcher", socket.id);
+        io.in(room).to(broadcaster).emit("watcher", socket.id);
       });
       socket.on("disconnect", () => {
-        socket.to(broadcaster).emit("disconnectPeer", socket.id);
+        // socket.to(broadcaster).emit("disconnectPeer", socket.id);
+        io.in(room).to(broadcaster).emit("disconnectPeer", socket.id);
       });
 
 
-        socket.on("offer", (id, message) => {
-          socket.to(id).emit("offer", socket.id, message);
+      socket.on("offer", (id, message) => {
+          // socket.to(id).emit("offer", socket.id, message);
+          io.in(room).to(id).emit("offer", socket.id, message);
       });
       socket.on("answer", (id, message) => {
-        socket.to(id).emit("answer", socket.id, message);
+        io.in(room).to(id).emit("answer", socket.id, message);
       });
       socket.on("candidate", (id, message) => {
-        socket.to(id).emit("candidate", socket.id, message);
+        io.in(room).to(id).emit("candidate", socket.id, message);
       });
     });
-
-
-
-
-
-
 
     return router
     
   }
 
+  module.exports = sockets;

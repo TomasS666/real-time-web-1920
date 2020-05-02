@@ -10,7 +10,8 @@ const Show = new Schema({
     },
     name : String, 
     genres : [String],
-    date: Date
+    date: Date,
+    room_id: {type: String, required: true}
 });
 
 
