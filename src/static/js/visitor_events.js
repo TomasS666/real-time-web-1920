@@ -65,6 +65,7 @@ function update(json){
     const container = d3.select('#shows')
     const articles = container.selectAll('article')
     
+    console.log(articles.order())
 
     articles
     .data(json)
@@ -91,6 +92,7 @@ function update(json){
     .data(json)
     .enter()
         .append('article')
+        .attr('id', (d, i)=> i)
         // .style('height', '0%')
         // .style('padding', '0')
         .append('h3')
@@ -98,7 +100,7 @@ function update(json){
 
         .append('div')
         .text(d => {
-            
+            console.log('enter')
             return d.genres.join(', ')
         })
 

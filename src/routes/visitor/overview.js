@@ -20,9 +20,9 @@ router.get('/profile', isLoggedIn, checkUserRole, (req, res) => {
 function checkUserRole(req, res, next) {
   if (req.session.user.userrole == "Artist") {
 
-    Show.findById('5ea63b9313c98f3c4c5bfc3d', function (err, show) {
-      console.log(show)
-    })
+    // Show.findById('5ea63b9313c98f3c4c5bfc3d', function (err, show) {
+    //   console.log(show)
+    // })
 
     res.render("artist_dashboard.ejs", {
       title: "Welcome",
@@ -31,9 +31,7 @@ function checkUserRole(req, res, next) {
     })
   } else if(req.session.user.userrole == "Visitor") {
 
-
-
-    getShows(req, res, next)
+    getShows()
       .then(shows => {
         res.render("profile.ejs", {
           title: "Welcome",
@@ -49,7 +47,12 @@ function checkUserRole(req, res, next) {
 }
 
 
-async function getShows(req, res, next) {
+async function getShows(user) {
+
+  if(user){
+    User.find()
+  }
+
   const shows = await Show.find({})
 
   console.log(shows)

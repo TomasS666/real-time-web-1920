@@ -277,9 +277,10 @@ const video = document.querySelector("video");
 
 // Media contrains
 const constraints = {
-  video: { facingMode: "user" }
-  // Uncomment to enable audio
-  // audio: true,
+  video: { 
+    facingMode: "user" 
+  },
+  audio: true,
 };
 
 
@@ -331,3 +332,29 @@ navigator.mediaDevices
   window.onunload = window.onbeforeunload = () => {
     socket.close();
   };
+
+
+
+  (function videoControls(){
+    const pausebtn = document.querySelector('button[data-btn-pause]  ')
+    pausebtn.addEventListener('click', pause)
+
+    function pause(){
+      pausebtn.textContent = "play"
+      pausebtn.addEventListener('click', play)
+      pausebtn.removeEventListener('click', pause)
+     return video.pause()
+    }
+
+    function play(){
+      pausebtn.textContent = "pause"
+      pausebtn.addEventListener('click', pause)
+      pausebtn.removeEventListener('click', play) 
+     return video.play()
+    }
+
+    
+  })()
+
+
+ 
