@@ -12,7 +12,7 @@ router.get('/register', (req, res) => {
         title: 'Sign-up',
         offline: true,
         errors: req.session.errors,
-        script:[]
+        scripts:['register-form.js']
     });
     req.session.errors = null;
 });

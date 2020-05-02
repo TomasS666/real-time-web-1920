@@ -6,6 +6,7 @@ const path = require('path');
 const isLoggedIn = require('../../middleware/is-logged-in')
 
 const Show = require('../../models/show')
+const Artist = require('../../models/artist')
 
 const flash = require('express-flash')
 
@@ -24,11 +25,17 @@ function checkUserRole(req, res, next) {
     //   console.log(show)
     // })
 
-    res.render("artist_dashboard.ejs", {
-      title: "Welcome",
-      session: req.session,
-      scripts: ['socket.io.js', 'artist_events.js']
-    })
+    getShows(req.session.user)
+      .then(shows =>{
+        res.render("artist_dashboard.ejs", {
+          title: "Welcome",
+          session: req.session,
+          shows: shows,
+          scripts: ['socket.io.js', 'artist_events.js']
+        })
+      })
+
+
   } else if(req.session.user.userrole == "Visitor") {
 
     getShows()
@@ -49,15 +56,22 @@ function checkUserRole(req, res, next) {
 
 async function getShows(user) {
 
+
+
   if(user){
-    User.find()
+    console.log(`User is ${user.username}`)
+    const userShows = await Artist.findOne({userName: user.userName}).populate('shows').exec()
+    console.log(`populated? ${userShows}`)
+      
+    return userShows.shows
+  }else{
+    const shows = await Show.find({}).populate('artist')
+
+    console.log(shows)
+  
+    return shows
   }
 
-  const shows = await Show.find({})
-
-  console.log(shows)
-
-  return shows
 }
 
 

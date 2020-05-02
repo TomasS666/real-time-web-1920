@@ -15,7 +15,7 @@
         <legend>Create a new user</legend>
         <label for="userRole">Visitor / Artist?
         <select name="userRole" id="userRole">
-          <option value="visitor">Visitor</option>
+          <option value="visitor" selected>Visitor</option>
           <option value="artist">Artist</option>
         </select>
       </label>
@@ -30,6 +30,9 @@
         </label>
         <label for="password">Password
           <input id="password" name="password" type="password" required placeholder="Enter a password here">
+        </label>
+            <label for="artistName">Artist name
+          <input id="artistName" name="artistName" type="text" placeholder="Enter a password here">
         </label>
         <button class="primary" type="submit">Create Account</button>
    </fieldset>

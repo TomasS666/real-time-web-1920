@@ -13,10 +13,21 @@ const isLoggedIn = require('../../middleware/is-logged-in')
 
 const User = require('../../models/User_BASE.js')
 
+
+const dateFormat = require('dateformat');
+
 router.get('/add-show', isLoggedIn, (req, res, next)=>{
 
+    let currentDate = new Date();
+
+    // add a day
+    currentDate.setDate(currentDate.getDate() + 1); 
+
+   const date = dateFormat(currentDate, 'yyyy-mm-dd')
+    console.log(date)
     res.render("add_show.ejs", {
-      scripts: ['socket.io.js','add_show.js']
+        current_date: date,
+        scripts: ['socket.io.js','add_show.js']
   })
     
 })
@@ -41,46 +52,57 @@ router.post('/add-show', isLoggedIn, (req, res, next)=>{
     //     console.log(doc)
     // });
 
-    Artist.findOne({ userName: req.session.user.userName }, async function(err, artist){
-        if(err){
-            console.log(err)
-        }else{
+    Artist.findOne({ userName: req.session.user.userName }).exec()
+    .then(async (artist) => {
+        console.log('Got artist', artist);
+ 
 
-            console.log(artist)
+            console.log(`Date of event : ${dateFormat(req.body.date, 'dd-mm-yyyy')}`)
 
             // Save show with reference id to artist
             const newShow = new Show({ 
                 artist: artist._id,
                 name: req.body.title, 
                 genres: req.body.genres,
-                date: new Date(),
+                date: req.body.date,
+                startTime: req.body.startTime,
+                endTime: req.body.endTime,
+                timestamp: new Date(),
                 room_id: uuid.v1()
             })
 
+            let addedShow = null
             // Save show
             newShow.save((error, doc) => {
-                if(err){
-                    console.log(err)
+                console.log("what's happening")
+                if(error){
+                    console.log(error)
                 }else{
-                    console.log(doc)
+                    addedShow = doc
+                    console.log('saved', addedShow)
                 }
             });
 
-            console.log("artist", artist)
-            
             // Add show reference to artist shows array
 
             artist.shows.push(newShow._id)
+            const shows = await artist.save()
 
-            return await artist.save()
-        }
-    }).then( res.redirect('/profile'))
-      .catch(err => {
-          console.log(err)
-          res.redirect('/profile')
-      })
+            // console.log('added show', addedShow)
+            return [shows, addedShow]
+        
+    }).then(([shows, addedShow]) => {
+        // console.log('Result?', addedShow)
+        res.redirect('/profile')
+    })
+    .catch(err => {
+        console.log(err)
+        res.redirect('/profile')
+    })
+    })
+      
+   
     
-})
 
 module.exports = function(io){
     let activeSockets = []
@@ -94,12 +116,14 @@ module.exports = function(io){
 
         })
 
-        Show.watch().
-        on('change', data => {
+        Show.watch()
+        .on('change', data => {
             console.log(new Date(), data)
 
             if(data.operationType == "insert"){
                 // socket.on('add show', (data) => {
+
+                // })
 
                     console.log("Document inserted")
 

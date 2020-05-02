@@ -10,8 +10,18 @@ const Show = new Schema({
     },
     name : String, 
     genres : [String],
+    timestamp: Date,
     date: Date,
-    room_id: {type: String, required: true}
+    startTime: {
+        type: String, 
+        required: false
+    },
+    endTime: {
+        type: String, required: true
+    },
+    room_id: {
+        type: String, required: true
+    }
 });
 
 

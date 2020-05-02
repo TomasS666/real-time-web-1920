@@ -20,7 +20,10 @@ router.get('/shows', isLoggedIn, (req, res, next)=>{
 let test = null
 
 //  Find all shows, excluse _id and __v field
-    Show.find({}, '-_id -__v').exec()
+//  Sub query Artist, withouth retrieving the ObjectID, hashed password, and additional non needed data
+    Show.find({}, '-_id -__v')
+        .populate('artist', '-_id -shows -password -userName -userRole -__v')
+        .exec()
         
         .then(json => {
 

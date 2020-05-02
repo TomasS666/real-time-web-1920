@@ -56,7 +56,7 @@ getShows()
     })
 
 
-// const test = [{name: 'Tomas'}, {name: 'Marcella'}, {name: 'Wim'}]
+
 
 // update(test)
 function update(json){

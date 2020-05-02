@@ -17,14 +17,36 @@
         <label for="title">Title
           <input id="title" name="title" type="text" required placeholder="Enter the title here">
         </label>
-        <label for="genres">Genres
+        <label for="genres">Genres </label>
           <select name="genres" id="genres" required>
               <option value="">Please select a genre</option>
+              
+              <option value="Rock">RocPopptPop
+              <option value="Pop">Pop</option>
+              <option value="Indie">Indie</option>
               <option value="Jazz">Jazz</option>
               <option value="Metal">Metal</option>
               <option value="Reggae">Reggae</option>
+              <option value="Reggae">Ska</option>
+              <option value="Rocksteady">Rocksteady</option>
+              <option value="Punk">Punk</option>
+              <option value="Trance">Trance</option>
+              <option value="Techno">Techno</option>
+              <option value="Disco">Disco</option>
           </select>
-        </label>
+
+          <label for="startTime">Choose a starting time</label>
+          <input type="time" id="startTime" value="18:00" step="900" name="startTime" required>
+          <label for="startTime">Choose ending time</label>
+          <input type="time" id="endTime" value="23:00" step="900" name="endTime" required>
+
+
+          <label for="date">Date of event</label>
+
+<input type="date" id="start" name="date"
+       value="<%= current_date %>"
+       min="<%= current_date %>" max="2030-12-12">
+       
         <button class="primary" type="submit">Create Show</button>
    </fieldset>
   </form>

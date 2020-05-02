@@ -101,10 +101,15 @@ form.login fieldset{
     padding: 4rem;
 }
 
-form.login label:not(:first-of-type){
+label:not(:first-of-type){
     margin: 2rem 0;
     display: block;
 }
+
+// #register select option[value="visitor"]:checked{
+
+// }
+
 /* Chat form */
 
 fieldset{
@@ -230,6 +235,18 @@ article{
     margin: 1rem 0;
     transition: all 3s;
 } 
+
+
+// Classes 
+
+
+label.hide, .hide{
+    display: none;
+}
+
+.show{
+    display: block;
+}
 
 
 
