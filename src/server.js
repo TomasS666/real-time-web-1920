@@ -26,7 +26,7 @@ const login = require("./routes/login.js")
 const logout = require("./routes/logout.js")
 
 const home = require("./routes/home.js")
-const show = require("./routes/show.js")(io)
+const show = require("./routes/show.js")
 const addShow = require("./routes/artist/add_show.js")(io)
 const profile = require("./routes/visitor/overview.js")
 // const editProfile = require("./routes/editProfile.js")
@@ -55,6 +55,10 @@ app
     resave: false
   }))
   .use(flash())
+  .use((req, res, next) => {
+      res.locals['socketio'] = io
+      return next()
+    })
 
   // .use(partials())
   .set('view-engine', 'ejs')

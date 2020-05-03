@@ -51,8 +51,13 @@ const config = {
   ]
 };
 
-const socket = io(window.location.pathname);
-console.log(window.location.pathname)
+const pathnameParts = window.location.pathname.split('/')
+const roomId = `/${pathnameParts[pathnameParts.length -1]}`
+
+console.log(roomId);
+
+const socket = io(roomId);
+
 const video = document.querySelector("video");
 
 
@@ -90,6 +95,7 @@ socket.on("connect", () => {
 });
 
 socket.on("broadcaster", () => {
+  console.log('yes, it came here')
   socket.emit("watcher");
 });
 

@@ -25,6 +25,12 @@ router.get('/visitor/:id?', setRoom, (req, res, next) => {
   // Gonna test it to try the peers, and then write my own logic  
   // https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/
 
+
+
+  const io = res.locals['socketio']
+
+  sockets(io)
+
   res.render("show.ejs", {
     scripts: ['socket.io.js', 'show-visitor.js']
   })
@@ -49,30 +55,21 @@ function getRoom(){
   return room
 }
 
+
+let activeSockets = []
+let hosts = []
+
 function sockets(io) {
 
   // console.log(router.stack[0].keys[0])
 
-  let activeSockets = []
-  let hosts = []
   console.log('room', room)
   console.log(activeSockets)
-  console.log(`/show/visitor/${room}`)
-
-  // const nsp = io.of(`/show/visitor/${room}`);
-  // nsp.on('connection', function (socket) {
-  //   console.log('someone connected');
-  // });
-  // nsp.emit('hi', 'everyone!');
-
+  console.log(`/${room}`)
   let broadcaster
-
-  io.sockets.on("connection", socket => {
-
-    // socket.join(room)
-
-
-    io.to(room).emit('test', room);
+  const nsp = io.of(`${room}`);
+  nsp.on('connection', function (socket) {
+    console.log('someone connected');
 
 
 
@@ -81,33 +78,55 @@ function sockets(io) {
       console.log('broadcaster', broadcaster);
       hosts.push(broadcaster);
       console.log(hosts)
-      // socket.broadcast.emit("broadcaster");
-      io.to(room).emit('broadcaster')
+      socket.broadcast.emit("broadcaster");
+      // io.to(room).emit('broadcaster')
     });
     socket.on("watcher", () => {
-      // socket.to(broadcaster).emit("watcher", socket.id);
-      io.in(room).to(broadcaster).emit("watcher", socket.id);
+      console.log('Broadcaster: ' + broadcaster, 'Socket: ' +socket.id)
+      socket.to(broadcaster).emit("watcher", socket.id);
+      // io.in(room).to(broadcaster).emit("watcher", socket.id);
     });
     socket.on("disconnect", () => {
-      // socket.to(broadcaster).emit("disconnectPeer", socket.id);
-      io.in(room).to(broadcaster).emit("disconnectPeer", socket.id);
+      // console.log("here?")
+      socket.to(broadcaster).emit("disconnectPeer", socket.id);
+      // io.in(room).to(broadcaster).emit("disconnectPeer", socket.id);
     });
 
 
     socket.on("offer", (id, message) => {
-      // socket.to(id).emit("offer", socket.id, message);
-      io.in(room).to(id).emit("offer", socket.id, message);
+      console.log("here?")
+      socket.to(id).emit("offer", socket.id, message);
+      // io.in(room).to(id).emit("offer", socket.id, message);
     });
     socket.on("answer", (id, message) => {
-      io.in(room).to(id).emit("answer", socket.id, message);
+      socket.to(id).emit("answer", socket.id, message);
+      // io.in(room).to(id).emit("answer", socket.id, message);
     });
     socket.on("candidate", (id, message) => {
-      io.in(room).to(id).emit("candidate", socket.id, message);
+      console.log('Came here?')
+      socket.to(id).emit("candidate", socket.id, message);
+      
+      // io.in(room).to(id).emit("candidate", socket.id, message);
     });
-  });
 
-  return router
+  });
+  nsp.emit('hi', 'everyone!');
+
+
+
+  // io.sockets.on("connection", socket => {
+
+  //   // socket.join(room)
+
+
+  //   io.to(room).emit('test', room);
+
+
+
+   
+  // });
+
 
 }
 
-module.exports = sockets;
+module.exports = router

@@ -272,7 +272,11 @@ const config = {
   ]
 };
 
-const socket = io()
+const pathnameParts = window.location.pathname.split('/')
+const roomId = `/${pathnameParts[pathnameParts.length -1]}`
+
+const socket = io(roomId)
+console.log(roomId)
 const video = document.querySelector("video");
 
 // Media contrains
@@ -295,6 +299,7 @@ navigator.mediaDevices
 
 
   socket.on("watcher", id => {
+    console.log('watcher?')
     const peerConnection = new RTCPeerConnection(config);
     peerConnections[id] = peerConnection;
   
@@ -311,6 +316,7 @@ navigator.mediaDevices
       .createOffer()
       .then(sdp => peerConnection.setLocalDescription(sdp))
       .then(() => {
+        console.log('making offer')
         socket.emit("offer", id, peerConnection.localDescription);
       });
   });
