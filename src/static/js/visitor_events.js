@@ -83,32 +83,38 @@ function update(json){
 
 
     articles
-    .data(json)
+        .data(json)
         .select('div')
         .text(d => {
             console.log(d)
             return d.genres.join(', ')
         })
-    articles
-    .data(json)
-    .enter()
-        .append('article')
-        .attr('id', (d, i)=> i)
-        // .style('height', '0%')
-        // .style('padding', '0')
-        .append('h3')
-        .text(d => d.name)
+    
+   var article =  articles
+                    .data(json)
+                    .enter()
+                    .append('article');
 
+    article
+        .attr('id', (d, i)=> i)
+
+    article
+        .append('h3')
+        .text(d => d.name);
+    article
         .append('div')
         .text(d => {
             console.log('enter')
             return d.genres.join(', ')
         })
+
+    article
         .append('a')
         .attr('href', d => {
             return `/show/visitor/${d.room_id}`
         })
-        .text('join')
+        .text('join');
+
 
 
         // container.selectAll('article').transition()

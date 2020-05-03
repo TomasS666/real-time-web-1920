@@ -51,7 +51,8 @@ const config = {
   ]
 };
 
-const socket = io();
+const socket = io(window.location.pathname);
+console.log(window.location.pathname)
 const video = document.querySelector("video");
 
 
@@ -105,3 +106,36 @@ socket.on('test', (data)=>{
 window.onunload = window.onbeforeunload = () => {
   socket.close();
 };
+
+
+
+function initCrowd(){
+  const svg = d3.select('svg')
+
+
+
+  
+
+  const field = d3.select('g#field')
+  console.log('initfield')
+  field.append('circle')
+        .attr('r', '30')
+        .attr('cx', '300')
+        .attr('cy', '1200')
+        .attr('fill', 'red')
+
+}
+
+
+// function changeSky(){
+//   const sky = d3.select('#sky')
+
+//   function update(json){
+//     sky
+//       .fill('')
+
+//       switch(time)
+//   }
+// }
+
+initCrowd()
