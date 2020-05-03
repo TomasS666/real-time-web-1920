@@ -74,6 +74,13 @@ There was a lot of trouble with getting ```javascript navigator.mediaDevices.get
 And tested that in multiple browsers, localy and deployed with http and https. And although it's supported almost everywhere, it's still not implemented to work everywhere. There are still bugs I would like to get out in the future. But in Chrome, Firefox and Safari on certain devices it works. And that's good enough at this time. It works on my Huawei p20 mate lite in the chrome browser. It works on Desktop chrome, firefox and I think Safari. It doesn't work yet on Edge, while Edge should support it, but I couldn't resolve this yet. It's sadly not supported on IE. 
 
 ## Future features
+* Custom stages
+* More interaction and micro-interactions during the show
+* Sky in show based on weather conditions or clients local time
+* Ticket system for shows
+* Better authentication, especially when joining a namespace
+* Improvements on DOM manipulation
+* Better scalability
 
 ## Acknowledgements
 Robin, Ramon, Robert, Nick, Laurens, Guido, and possibly others for good ideas, helping with my concept, mental support.
@@ -82,7 +89,7 @@ This blog for understanding the barebones of WebRTC, peer connections and how to
 https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/
 Gonna test it to try the peers, and then write my own logic. Don't worry, I will have to add my whole own strategy because the stream is gonna be a one-side communication.
 
-Big props for r2schools, for getting my mongodb replica set up and running localy. Was a pain at first, but because of this tutorial I totally got it: 
+Big props for r2schools, for giving me the knowledge to get my mongodb replica set up and running localy. Was a pain at first, but because of this tutorial I totally got it: 
 
 [Tutorial](https://www.youtube.com/watch?v=bJo7nr9xdrQ)  
 [His Youtube Channel](https://www.youtube.com/channel/UCjMKqt0sYMkBEfFg4YtqUdg)
