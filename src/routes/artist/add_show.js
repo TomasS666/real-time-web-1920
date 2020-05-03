@@ -20,6 +20,9 @@ router.get('/add-show', isLoggedIn, (req, res, next)=>{
 
     let currentDate = new Date();
 
+    const io = res.locals['io']
+    sockets(io)
+
     // add a day
     currentDate.setDate(currentDate.getDate() + 1); 
 
@@ -42,6 +45,10 @@ router.post('/add-show', isLoggedIn, (req, res, next)=>{
         //     // socket.broadcast.emit()
             
         // });
+
+
+        const io = res.locals['io']
+        sockets(io)
 
 
     
@@ -101,12 +108,14 @@ router.post('/add-show', isLoggedIn, (req, res, next)=>{
     })
     })
       
-   
-    
+  
 
-module.exports = function(io){
+module.exports = router;
+function sockets(io){
     let activeSockets = []
     io.on("connection", (socket) => {
+
+        console.log('why is this connected?')
 
         console.time("dbcount")
         Show.countDocuments().then(count => {
@@ -204,7 +213,6 @@ module.exports = function(io){
     
     })
 
-    return router
     
   }
 

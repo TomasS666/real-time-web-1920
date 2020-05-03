@@ -56,7 +56,7 @@ const roomId = `/${pathnameParts[pathnameParts.length -1]}`
 
 console.log(roomId);
 
-const socket = io(roomId);
+const socket = io.connect(roomId);
 
 const video = document.querySelector("video");
 
@@ -91,6 +91,7 @@ socket.on("candidate", (id, candidate) => {
 });
 
 socket.on("connect", () => {
+  console.log('connect')
   socket.emit("watcher");
 });
 
@@ -100,6 +101,7 @@ socket.on("broadcaster", () => {
 });
 
 socket.on("disconnectPeer", () => {
+  console.log('closing peer connection')
   peerConnection.close();
 });
 
@@ -107,6 +109,14 @@ socket.on("disconnectPeer", () => {
 socket.on('test', (data)=>{
   console.log(data)
   console.log("what")
+})
+
+
+socket.on('visitor chatmessage', (msg)=>{
+  
+})
+socket.on('test', (msg)=>{
+  console.log(msg)
 })
 
 window.onunload = window.onbeforeunload = () => {

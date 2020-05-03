@@ -13,6 +13,10 @@ router.get('/:id?', setRoom, (req, res, next) => {
   // Gonna test it to try the peers, and then write my own logic  
   // https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/
 
+  const io = res.locals['socketio']
+
+  sockets(io)
+
   res.render("show.ejs", {
     scripts: ['socket.io.js', 'show-artist.js']
   })
@@ -69,12 +73,19 @@ function sockets(io) {
   let broadcaster
   const nsp = io.of(`${room}`);
   nsp.on('connection', function (socket) {
+    
     console.log('someone connected');
+    console.log('broadcaster = ' + broadcaster)
 
 
+    // nsp.on('broadcaster', ()=>{
+    //   console.log('namespace test')
+    // })
 
-    socket.on("broadcaster", () => {
-      broadcaster = socket.id;
+    socket.on("broadcaster", (msg) => {
+      console.log(msg)
+      console.log('Broadcast event triggered')
+      broadcaster = msg;
       console.log('broadcaster', broadcaster);
       hosts.push(broadcaster);
       console.log(hosts)
@@ -84,6 +95,7 @@ function sockets(io) {
     socket.on("watcher", () => {
       console.log('Broadcaster: ' + broadcaster, 'Socket: ' +socket.id)
       socket.to(broadcaster).emit("watcher", socket.id);
+      socket.emit('test', 'who else receives this?')
       // io.in(room).to(broadcaster).emit("watcher", socket.id);
     });
     socket.on("disconnect", () => {
@@ -108,6 +120,10 @@ function sockets(io) {
       
       // io.in(room).to(id).emit("candidate", socket.id, message);
     });
+
+    socket.on('visitor chatmessage', (id, message) => {
+      socket.broadcast.emit('visitor chatmessage', message);
+    })
 
   });
   nsp.emit('hi', 'everyone!');

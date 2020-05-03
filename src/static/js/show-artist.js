@@ -275,7 +275,7 @@ const config = {
 const pathnameParts = window.location.pathname.split('/')
 const roomId = `/${pathnameParts[pathnameParts.length -1]}`
 
-const socket = io(roomId)
+const socket = io.connect(roomId)
 console.log(roomId)
 const video = document.querySelector("video");
 
@@ -292,7 +292,8 @@ navigator.mediaDevices
   .getUserMedia(constraints)
   .then(stream => {
     video.srcObject = stream;
-    socket.emit("broadcaster");
+    console.log('emit broadcaster')
+    socket.emit("broadcaster", socket.id);
   })
   .catch(error => console.error(error));
 
@@ -308,6 +309,7 @@ navigator.mediaDevices
       
     peerConnection.onicecandidate = event => {
       if (event.candidate) {
+        console.log('emiting candidate')
         socket.emit("candidate", id, event.candidate);
       }
     };

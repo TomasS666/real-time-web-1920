@@ -25,6 +25,10 @@ const socket = io()
         console.log(data)
     })
 
+    socket.on('test', (msg)=>{
+        console.log(msg)
+    })
+
 
 
 // }
