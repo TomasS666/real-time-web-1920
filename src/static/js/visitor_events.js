@@ -29,6 +29,20 @@ const socket = io()
         console.log(msg)
     })
 
+    socket.on('show is deleted', (data)=>{
+        console.log('test')
+        console.log(data)
+        if(shows.find(show => show.room_id == data)){
+            console.log(shows)
+            update(shows)
+        }else{
+            console.log('show is not here ', shows)
+        }
+
+  
+
+     
+    })
 
 
 // }
@@ -58,9 +72,11 @@ getShows()
             update(shows)
         })
 
-        socket.on('artist deleted show', (data)=>{
+        socket.on('show is deleted', (data)=>{
+            console.log(data)
             if(shows.find(show => show.room_id == data)){
                 console.log(shows)
+                shows = shows.filter(show => show.room_id != data)
                 update(shows)
             }else{
                 console.log('show is not here ', shows)

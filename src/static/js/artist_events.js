@@ -29,9 +29,9 @@ if(document.querySelector('section#shows')){
     const showWrapper = document.querySelector('section#shows')
 
     showWrapper.addEventListener('click', (event) => {
-        event.preventDefault()
+    
         if(event.target.tagName.toLowerCase() == 'button'){
-            
+            event.preventDefault()
         console.log('coming here')
 
 
@@ -44,7 +44,7 @@ if(document.querySelector('section#shows')){
                 console.log(res)
 
                 socket.emit('artist deleted show', room_id )
-                // window.location.reload()
+                window.location.reload()
             })
             .catch(err => console.log(err))
         }

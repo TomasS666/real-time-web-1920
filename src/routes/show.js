@@ -70,8 +70,9 @@ function sockets(io) {
   console.log('room', room)
   console.log(activeSockets)
   console.log(`/${room}`)
-  let broadcaster
+
   const nsp = io.of(`${room}`);
+  let broadcaster
   nsp.on('connection', function (socket) {
     
     console.log('someone connected');
@@ -94,8 +95,12 @@ function sockets(io) {
     });
     socket.on("watcher", () => {
       console.log('Broadcaster: ' + broadcaster, 'Socket: ' +socket.id)
-      socket.to(broadcaster).emit("watcher", socket.id);
-      socket.emit('test', 'who else receives this?')
+
+      if(broadcaster){
+        socket.to(broadcaster).emit("watcher", socket.id);
+      }
+    
+      // socket.emit('test', 'who else receives this?')
       // io.in(room).to(broadcaster).emit("watcher", socket.id);
     });
     socket.on("disconnect", () => {
@@ -115,7 +120,7 @@ function sockets(io) {
       // io.in(room).to(id).emit("answer", socket.id, message);
     });
     socket.on("candidate", (id, message) => {
-      console.log('Came here?')
+      // console.log('Came here?')
       socket.to(id).emit("candidate", socket.id, message);
       
       // io.in(room).to(id).emit("candidate", socket.id, message);

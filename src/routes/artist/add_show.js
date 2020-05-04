@@ -137,7 +137,7 @@ module.exports = function (io){
 
         socket.on('artist deleted show', (data) => {
             console.log('artist deleted')
-            socket.emit('artist deleted show', data)
+            socket.broadcast.emit('show is deleted', data)
         })
 
         console.time("dbcount")
