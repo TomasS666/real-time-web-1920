@@ -100,7 +100,6 @@ function findUser(req, res, next) {
     })
     .catch(err => {
         console.log(err)
-        console.log('come here')
         req.flash('warning', 'Please try again')
         res.redirect('/login')
     })

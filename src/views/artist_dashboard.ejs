@@ -12,6 +12,7 @@
     <%-include('components/header.ejs', {title: title, session:session}) %>
     <a href="/add-show">Add show</a>
 
+    <section id="shows">
     <% if(typeof shows != 'undefined') { 
       for(let i = 0; i < shows.length; i++) {%>
         <article>
@@ -24,13 +25,19 @@
 
       <%  }
      }%>
+     <div>Date: <%= shows[i].date %></div>
+     <div>Start time: <%= shows[i].startTime %></div>
+     <div>Approximately ending at: <%= shows[i].endTime %></div>
+
+    <button data-room_id="<%= shows[i].room_id %>">Delete this show</button>
      <a href="/show/<%= shows[i].room_id %>">Host show</a>
         </article>
    <% } %>
 
         
     <% } %>
-
+      
+  </section>
    <%-include('components/footer.ejs') %>
  </body>
 </html>

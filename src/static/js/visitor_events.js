@@ -57,6 +57,30 @@ getShows()
             console.log(shows)
             update(shows)
         })
+
+        socket.on('artist deleted show', (data)=>{
+            if(shows.find(show => show.room_id == data)){
+                console.log(shows)
+                update(shows)
+            }else{
+                console.log('show is not here ', shows)
+            }
+
+      
+
+         
+        })
+
+        // socket.on('client show deleted', (data)=>{
+        //     console.log(data.data)
+
+        //     // Why does unshift not work as expected?
+        //     shows.unshift(data.data)
+        //     console.log(shows)
+        //     update(shows)
+        // })
+
+
     })
 
 

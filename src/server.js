@@ -27,7 +27,7 @@ const logout = require("./routes/logout.js")
 
 const home = require("./routes/home.js")
 const show = require("./routes/show.js")
-const addShow = require("./routes/artist/add_show.js")
+const addShow = require("./routes/artist/add_show.js")(io)
 const profile = require("./routes/visitor/overview.js")
 // const editProfile = require("./routes/editProfile.js")
 
@@ -150,7 +150,7 @@ app
 
 
 mongoose
-  .connect(process.env.dbUrl, {
+  .connect(process.env.localDb, {
     connectWithNoPrimary: true,
       useCreateIndex: true,
       // useUnifiedTopology: true,

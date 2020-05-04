@@ -59,9 +59,9 @@ async function getShows(user) {
 
 
   if(user){
-    console.log(`User is ${user.username}`)
+    console.log(`User is ${user.userName}`)
     const userShows = await Artist.findOne({userName: user.userName}).populate('shows').exec()
-    console.log(`populated? ${userShows}`)
+    // console.log(`populated? ${userShows}`)
       
     return userShows.shows
   }else{

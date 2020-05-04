@@ -1,3 +1,5 @@
+
+
 const socket = io()
 
 window.onload = function(){
@@ -19,16 +21,40 @@ window.onload = function(){
             return true
         })
     }
-    }
-
-
-   
-    // function addShow(){
-
-    // }
 
 }
 
 
+if(document.querySelector('section#shows')){
+    const showWrapper = document.querySelector('section#shows')
+
+    showWrapper.addEventListener('click', (event) => {
+        event.preventDefault()
+        if(event.target.tagName.toLowerCase() == 'button'){
+            
+        console.log('coming here')
+
+
+            const room_id = event.target.getAttribute('data-room_id')
+
+
+            fetch(`/remove-show/${room_id}`, {
+                method: 'DELETE'
+            }).then(res => {
+                console.log(res)
+
+                socket.emit('artist deleted show', room_id )
+                // window.location.reload()
+            })
+            .catch(err => console.log(err))
+        }
+    })
+}
+
+function hostingShow(){
+
+}
+
+}
 
     

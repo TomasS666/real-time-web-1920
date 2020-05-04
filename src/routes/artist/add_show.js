@@ -20,8 +20,8 @@ router.get('/add-show', isLoggedIn, (req, res, next)=>{
 
     let currentDate = new Date();
 
-    const io = res.locals['io']
-    sockets(io)
+    // const io = res.locals['socketio']
+    // sockets(io)
 
     // add a day
     currentDate.setDate(currentDate.getDate() + 1); 
@@ -33,6 +33,25 @@ router.get('/add-show', isLoggedIn, (req, res, next)=>{
         scripts: ['socket.io.js','add_show.js']
   })
     
+})
+
+router.delete('/remove-show/:room_id', isLoggedIn, (req, res, next)=>{
+    Artist.findOne({userName: req.session.user.userName}).populate('shows').exec()
+        .then(async (artist)=>{
+            
+
+           Show.deleteOne({room_id: req.params.room_id}).exec()
+                .then(async ()=>{
+                    artist.shows.pull(req.params.room_id)
+                    res.json(artist)
+                    return await artist.save()
+                 
+                })
+                .catch(err => console.log(err))
+
+        })
+        .catch(err => console.log(err))
+
 })
 
 
@@ -47,8 +66,8 @@ router.post('/add-show', isLoggedIn, (req, res, next)=>{
         // });
 
 
-        const io = res.locals['io']
-        sockets(io)
+        // const io = res.locals['socketio']
+        // sockets(io)
 
 
     
@@ -110,12 +129,16 @@ router.post('/add-show', isLoggedIn, (req, res, next)=>{
       
   
 
-module.exports = router;
-function sockets(io){
+module.exports = function (io){
     let activeSockets = []
     io.on("connection", (socket) => {
 
         console.log('why is this connected?')
+
+        socket.on('artist deleted show', (data) => {
+            console.log('artist deleted')
+            socket.emit('artist deleted show', data)
+        })
 
         console.time("dbcount")
         Show.countDocuments().then(count => {
@@ -149,6 +172,7 @@ function sockets(io){
                     data: data.fullDocument
                 });
             }
+
 
             
             
@@ -213,6 +237,6 @@ function sockets(io){
     
     })
 
-    
+    return router;
   }
 
