@@ -3,7 +3,7 @@
 
 ### Demo: {soon here, deployed, but under maintenance}
 
-![concept poster]([https://github.com/TomasS666/real-time-web-1920/blob/master/docs/rtw.png)
+![concept poster](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/rtw.png)
 
 ## Concept
 Your two year concert tour got canceled because a global pandemic? No problem, we got you covered with this new Realtime webapp, a central place to host your events online. Register, add your upcoming shows, edit shows, and interact via a live stream with your audience. 
