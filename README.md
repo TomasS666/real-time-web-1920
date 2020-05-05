@@ -24,6 +24,9 @@ Your two year concert tour got canceled because a global pandemic? No problem, w
 You can even see your audience crowd growing live. This way, you could be anywhere and be safe, yet be closer to your fans than ever before. 
 
 ## API
+At this moment, I have a little API of my own. I wanted to either make more endpoints in the future to request and query more specific data, but I didn't get there unfortunately. Right now I serve JSON from an endpoint ```/shows/``` which returns 
+
+I started out with serveral ideas, but wasn't all quite what I had in mind and I was struggling with getting on the right track with a good and realistic idea. 
 
 ### Data Lifecycle (DLC)
 ![Data illustratie](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/First-proces.png)
@@ -36,10 +39,15 @@ You can even see your audience crowd growing live. This way, you could be anywhe
 * Delete show
 
 #### Visitor events
-* Join room
-* 
+* Join room (when connecting to a namespace by hitting the visitor route : ```/show/visitor/{ predefined room_id } ```
 
 #### Server events
+
+### Events which require more explaination
+#### Visitor
+* ```show is deleted``` : when the artist removes a show it goes a little different then POSTING. The DELETE method is not supported in HTML5 forms. To my surprise. (You learn all the time). So when I delete one of my shows as an Artist, I check the clicked target within the show list > when it's a button within the show, I use the room_id as identifier because other data is left out on purpose, I emit that room id directly to 
+
+
 
 ###
 
