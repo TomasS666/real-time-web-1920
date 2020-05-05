@@ -33,7 +33,7 @@ Definition of the Oplog by MongoDB: __The oplog (operations log) is a special ca
 
 So basically, the oplog records everything that happens in the database. And when you have 3 nodes running, the two secondary nodes are catching up with the oplog of the PRIMARY node. 
 
-More about the replica sets and how election can come into play over here: 
+More about the replica sets and how election can come into play over here: [Wiki - MongoDB / Mongoose / Atlas](https://docs.mongodb.com/manual/core/replica-set-oplog/) 
 
 ## API
 At this moment, I have a little API of my own. I wanted to either make more endpoints in the future to request and query more specific data, but I didn't get there unfortunately. Right now I serve JSON from an endpoint ```/shows/``` which returns 
