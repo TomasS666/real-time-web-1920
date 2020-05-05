@@ -29,6 +29,12 @@ or you can download the zip file or something similar by clicking on the green b
 ## Replica set 
 To use MongoDB it's change stream functionality, you're required to get a MongoDB replica set up and running. In short, that's a formation of at least 3 mongod instances which maintain the same data. For it to be a valid formation there should at least be 3 instances. It's common to see a formation which has a PRIMARY node for writing and reading data and at least two SECONDARY nodes who listen to the oplog of the PRIMARY node to replicate / update the data.
 
+Definition of the Oplog by MongoDB: __The oplog (operations log) is a special capped collection that keeps a rolling record of all operations that modify the data stored in your databases.__ - https://docs.mongodb.com/manual/core/replica-set-oplog/
+
+So basically, the oplog records everything that happens in the database. And when you have 3 nodes running, the two secondary nodes are catching up with the oplog of the PRIMARY node. 
+
+More about the replica sets and how election can come into play over here: 
+
 ## API
 At this moment, I have a little API of my own. I wanted to either make more endpoints in the future to request and query more specific data, but I didn't get there unfortunately. Right now I serve JSON from an endpoint ```/shows/``` which returns 
 
