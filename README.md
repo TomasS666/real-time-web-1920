@@ -73,6 +73,18 @@ There was a lot of trouble with getting ```javascript navigator.mediaDevices.get
 
 And tested that in multiple browsers, localy and deployed with http and https. And although it's supported almost everywhere, it's still not implemented to work everywhere. There are still bugs I would like to get out in the future. But in Chrome, Firefox and Safari on certain devices it works. And that's good enough at this time. It works on my Huawei p20 mate lite in the chrome browser. It works on Desktop chrome, firefox and I think Safari. It doesn't work yet on Edge, while Edge should support it, but I couldn't resolve this yet. It's sadly not supported on IE. 
 
+### Bug peerOffer
+To be very short, the ability to stream video and audio to other users is based on WebRTC and peer connections. The basic flow goes something like this: 
+
+1. host / artist connects because it hits a route with a script that requests the user to enable their hardware for video and audio. 
+1. Or! A visitor hits another route first with a specific id to join the show which is not hosted yet because the host isn't connected.
+
+2. When a visitor hits the route, it's connected to that namespace because I set the req.params.id as the namespace. When that visitor connects, an event is send to the server. The server then in turn emits an event that a visitor is connected / watching specifically to the set host / broadcaster. If a broadcaster isn't set yet, it's just waiting there until a broadcaster is set. (required just a little if statement I oversaw) thanks to Ramon I got that working.
+
+3. The broadcaster gets notified with an event that someone is watching, then it makes a new peerConnection instance, sets it's localDescription and then emits that back to the server.
+
+4. The server sends it to the visitor which connected. A peerconnection instance is made there as well.
+
 ## Future features
 * Custom stages
 * More interaction and micro-interactions during the show
