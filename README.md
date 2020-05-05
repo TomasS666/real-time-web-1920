@@ -33,6 +33,11 @@ Definition of the Oplog by MongoDB: __The oplog (operations log) is a special ca
 
 So basically, the oplog records everything that happens in the database. And when you have 3 nodes running, the two secondary nodes are catching up with the oplog of the PRIMARY node. 
 
+To get started with a replica-set I recommend reading this: https://docs.mongodb.com/manual/tutorial/deploy-replica-set/
+If you're a Windows user like me, this might be a better resource: [Get your replica set running on Windows](https://www.youtube.com/watch?v=bJo7nr9xdrQ) 
+
+It might seem intimidating at first, but once you get through it's really awesome to see the replica set running and how the change stream serves us realtime changes. 
+
 More about the replica sets and how election can come into play over here: [Wiki - MongoDB / Mongoose / Atlas](https://docs.mongodb.com/manual/core/replica-set-oplog/) 
 
 ## API
