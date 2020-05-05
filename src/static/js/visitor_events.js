@@ -114,17 +114,9 @@ function update(json){
 
     articles
     .data(json)
-    .style('transform', 'scale(0)')
+    .style('opacity', '1')
         .select('h3')
         .text(d => d.name);
-    articles.transition().delay((d, i)=>{
-        console.log(i * 10)
-        return i * 400
-    })
-    .duration(1000)
-        .style('transform', 'scale(1)')
-        // .style('padding', '1rem')
-
 
     articles
         .data(json)
@@ -133,6 +125,25 @@ function update(json){
             console.log(d)
             return d.genres.join(', ')
         })
+
+    
+        
+    articles.transition().delay((d, i)=>{
+        console.log(i * 10)
+        return i * 400
+    })
+    .duration(1000)
+        .style('opacity', '1')
+        // .style('padding', '1rem')
+
+
+    articles
+        .data(json)
+        .select('div')
+        .html(d => {
+            console.log('enter')
+            return `<span class="info-tag">Genre:</span> ${d.genres.join(', ')}`
+        });
     
    var article =  articles
                     .data(json)
@@ -147,10 +158,29 @@ function update(json){
         .text(d => d.name);
     article
         .append('div')
-        .text(d => {
+        .html(d => {
             console.log('enter')
-            return d.genres.join(', ')
-        })
+            return `<span class="info-tag">Genre:</span> ${d.genres.join(', ')}`
+        });
+
+    article
+        .append('div')
+        .html(d => {
+            return `<span class="info-tag">Date:</span> ${d.date}`
+        });
+
+    article
+        .append('div')
+        .html(d => {
+            return `<span class="info-tag">Starting time:</span> ${d.startTime}`
+        });
+
+    article
+        .append('div')
+        .html(d => {
+            return `<span class="info-tag">Axprox end time:</span> ${d.endTime}`
+        });
+
 
     article
         .append('a')
