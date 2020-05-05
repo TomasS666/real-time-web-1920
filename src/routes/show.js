@@ -55,9 +55,9 @@ function setRoom(req, res, next) {
   }
 }
 
-function getRoom(){
-  return room
-}
+// function getRoom(){
+//   return room
+// }
 
 
 let activeSockets = []
@@ -78,6 +78,14 @@ function sockets(io) {
     console.log('someone connected');
     console.log('broadcaster = ' + broadcaster)
 
+    const alreadyConnected = activeSockets.find(connection => {
+      return connection == socket.id
+    })
+
+    if(!alreadyConnected){
+      activeSockets.push(socket.id)
+    }
+    nsp.emit('new crowdmember', activeSockets)
 
     // nsp.on('broadcaster', ()=>{
     //   console.log('namespace test')
@@ -104,9 +112,13 @@ function sockets(io) {
       // io.in(room).to(broadcaster).emit("watcher", socket.id);
     });
     socket.on("disconnect", () => {
-      // console.log("here?")
+      console.log("here?")
       socket.to(broadcaster).emit("disconnectPeer", socket.id);
-      // io.in(room).to(broadcaster).emit("disconnectPeer", socket.id);
+
+      activeSockets = activeSockets.filter(connection => connection != socket.id)
+      console.log(activeSockets, socket.id)
+      socket.broadcast.emit('crowdmember disconnected', activeSockets)
+
     });
 
 

@@ -124,21 +124,142 @@ window.onunload = window.onbeforeunload = () => {
 };
 
 
+socket.on('new crowdmember', (activeSockets) => {
+  console.log(activeSockets)
+  initCrowd(activeSockets)
+})
 
-function initCrowd(){
+socket.on('crowdmember disconnected', (activeSockets) => {
+  console.log(activeSockets)
+  initCrowd(activeSockets)
+})
+
+// socket.on('disconnected', () => {
+//   socket.emit('member disconnected')
+// })
+
+function initCrowd(activeSockets) {
+
+
+
   const svg = d3.select('svg')
 
 
-
+let yDistance = 20;
+let xDistance = 200;
   
 
   const field = d3.select('g#field')
-  console.log('initfield')
-  field.append('circle')
-        .attr('r', '30')
-        .attr('cx', '300')
-        .attr('cy', '1200')
-        .attr('fill', 'red')
+  const people = field.selectAll('image')
+
+  let index = 0; 
+  people
+  .data(activeSockets)
+  .attr('xlink:href', (d)=>{
+    return `/images/crowd/${Math.floor(Math.random() * 7) + 1}.png`
+  })
+  .attr('width', 200)
+  .attr('height', 200)
+  .attr('x', (d, i) => {
+
+    const fieldProps = document.querySelector('g#field polygon').getBoundingClientRect()
+
+
+    if(i == 0){
+      return index 
+    }else{
+      index++
+      return index * xDistance
+    }
+  })
+  .attr('y', (d, i) => {
+
+    
+    const fieldProps = document.querySelector('g#field polygon').getBoundingClientRect()
+
+    console.log(fieldProps)
+    
+    if(i == 0){
+      
+      return fieldProps.top
+    }else if((index * 200) > fieldProps.width){
+      console.log('else if')
+      console.log(index * 200)
+      
+      yDistance += yDistance
+      xDistance += 10
+      index = 0 
+      return fieldProps.top + yDistance
+    }else{
+      console.log(index, 'else')
+      return  fieldProps.top + yDistance
+    }
+
+
+   
+     
+  })
+
+  people
+  .data(activeSockets)
+  .enter()
+  .append('image')
+  .attr('xlink:href', `/images/crowd/${Math.floor(Math.random() * 8) + 1}.png`)
+  .attr('width', 200)
+  .attr('height', 200)
+  .attr('x', (d, i) => {
+
+    const fieldProps = document.querySelector('g#field polygon').getBoundingClientRect()
+
+
+    if(i == 0){
+      return index 
+    }else{
+      index++
+      return index * xDistance
+    }
+  })
+  .attr('y', (d, i) => {
+
+    
+    const fieldProps = document.querySelector('g#field polygon').getBoundingClientRect()
+
+    console.log(fieldProps)
+    
+    if(i == 0){
+      
+      return fieldProps.top
+    }else if((index * 200) > fieldProps.width){
+      console.log('else if')
+      console.log(index * 200)
+      
+      yDistance += yDistance
+      xDistance += 10
+      index = 0 
+      return fieldProps.top + yDistance
+    }else{
+      console.log(index, 'else')
+      return  fieldProps.top + yDistance
+    }
+
+
+   
+     
+  })
+
+
+  people
+  .data(activeSockets)
+  .exit()
+  .remove()
+
+
+  // console.log('initfield')
+  // field.append('circle')
+  //       .attr('r', '30')
+  //       .attr('cx', '300')
+  //       .attr('cy', '1200')
+  //       .attr('fill', 'red')
 
 }
 
@@ -154,4 +275,3 @@ function initCrowd(){
 //   }
 // }
 
-initCrowd()
