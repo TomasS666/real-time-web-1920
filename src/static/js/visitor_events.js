@@ -20,10 +20,10 @@ const socket = io()
         console.log(data)
     })
 
-    socket.on('client show deleted', (data)=>{
-        console.log(data.data.data)
-        console.log(data)
-    })
+    // socket.on('client show deleted', (data)=>{
+    //     console.log(data.data.data)
+    //     console.log(data)
+    // })
 
     socket.on('test', (msg)=>{
         console.log(msg)

@@ -58,7 +58,7 @@ app
   .use((req, res, next) => {
       res.locals['socketio'] = io
       return next()
-    })
+  })
 
   // .use(partials())
   .set('view-engine', 'ejs')
@@ -138,7 +138,7 @@ app
   // https://gist.github.com/pasupulaphani/9463004
   // On end of Node Proces, close Mongoose Connection
   var gracefulExit = function() { 
-    mongoose.connection.close(function () {
+    mongoose.connection.close(function () { 
       console.log('Mongoose default connection with DB :' + db_server + ' is disconnected through app termination');
       process.exit(0);
     });

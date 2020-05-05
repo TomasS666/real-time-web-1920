@@ -121,7 +121,9 @@ function sockets(io) {
 
     });
 
-
+    // When the artist has the peerconnection set up an the localdescription is set up
+    // It emits the offer to the new watcher
+    // The offer contains the peerconnection localdescription and gets send back only the new room member who's watching
     socket.on("offer", (id, message) => {
       console.log("here?")
       socket.to(id).emit("offer", socket.id, message);
@@ -143,7 +145,7 @@ function sockets(io) {
     })
 
   });
-  nsp.emit('hi', 'everyone!');
+  // nsp.emit('hi', 'everyone!');
 
 
 
