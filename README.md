@@ -11,6 +11,33 @@ You can even see your audience crowd growing live. This way, you could be anywhe
 
 
 ## Table of contents
+- [Real-Time Web @cmda-minor-web · 2019-2020](#real-time-web--cmda-minor-web---2019-2020)
+    + [Demo: https://rtw-tomas.herokuapp.com/login (in maintenance mode atm to avoid unwanted requests that rob me of my free dyno hours)](#demo--https---rtw-tomasherokuappcom-login--in-maintenance-mode-atm-to-avoid-unwanted-requests-that-rob-me-of-my-free-dyno-hours-)
+  * [Concept](#concept)
+  * [Table of contents](#table-of-contents)
+  * [How to install](#how-to-install)
+  * [Replica set](#replica-set)
+  * [API](#api)
+  * [Data Lifecycle (DLC)](#data-lifecycle--dlc-)
+  * [Socket events](#socket-events)
+    + [Artist events](#artist-events)
+    + [Visitor events](#visitor-events)
+    + [Server events](#server-events)
+  * [Events which require more explaination](#events-which-require-more-explaination)
+    + [Visitor](#visitor)
+  * [Data manipulation](#data-manipulation)
+  * [Features](#features)
+  * [Micro features / interactions](#micro-features---interactions)
+  * [Wishlist](#wishlist)
+  * [Known bugs](#known-bugs)
+    + [Browser Support getUserMedia and constraints](#browser-support-getusermedia-and-constraints)
+    + [Bug peerOffer](#bug-peeroffer)
+  * [Future features](#future-features)
+  * [Acknowledgements](#acknowledgements)
+  * [Used dependencies](#used-dependencies)
+  * [Used packages for Week 1](#used-packages-for-week-1)
+  * [Conclusion](#conclusion)
+  * [License](#license)
   
 # Description
 
