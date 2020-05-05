@@ -33,11 +33,11 @@ You can even see your audience crowd growing live. This way, you could be anywhe
 ### Socket events
 #### Artist events
 * Add show
-* 
+* Delete show
+
 #### Visitor events
 * Join room
-* Show added 
-* Show update
+* 
 
 #### Server events
 
@@ -49,10 +49,12 @@ You can even see your audience crowd growing live. This way, you could be anywhe
 * User roles with different rights
 * Video and audio streaming
 * Realtime show updates with change streams
-* User preferences
-* Artist / genre following for show recommendations
+* Deleting shows and communicating that to clients
+* ~Artist / genre following for show recommendations~
 
 ## Features
+* Live crowd ( D3 appending a crowd of people )
+* Shows were first rendered server side at entrance of the site, now the shows it's getting fetched in the client from my endpoint which serves the show data without objectId from the db to avoid vulnerabilities. And then it gets appended to the DOM. It's slower, it's not performant, but this was my way to keep an initial state of data which I can use to differ from incoming changes. The thing that makes me proud is that it's from a truthy source in my opinion because: client fetches data dat comes out of the database, server listens to change in database with a stream, if a change occured, I check the change operation and then I emit the fullDocument of the change over sockets to the clients. So data comes from the database anyway. If the client refreshed, it
 
 
 ## Micro features / interactions
@@ -62,7 +64,7 @@ You can even see your audience crowd growing live. This way, you could be anywhe
 * Editing shows
 * Show countdown
 * Scalable solution
-* D3 appending a crowd of people 
+
 * Ticket system, wanted to try Ticketmaster API.
 
 
@@ -99,12 +101,17 @@ Robin, Ramon, Robert, Nick, Laurens, Guido, and possibly others for good ideas, 
 
 This blog for understanding the barebones of WebRTC, peer connections and how to combine that with Socket.io.
 https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/
-Gonna test it to try the peers, and then write my own logic. Don't worry, I will have to add my whole own strategy because the stream is gonna be a one-side communication.
+Gonna test it to try the peers, and then write my own logic. I will have to add my whole own strategy because the stream is gonna be a one-side communication.
 
 Big props for r2schools, for giving me the knowledge to get my mongodb replica set up and running localy. Was a pain at first, but because of this tutorial I totally got it: 
 
 [Tutorial](https://www.youtube.com/watch?v=bJo7nr9xdrQ)  
 [His Youtube Channel](https://www.youtube.com/channel/UCjMKqt0sYMkBEfFg4YtqUdg)
+
+Thanks to this tutorial I finally got most of it working
+I was concerned It wouldn't work out anymore. Because I kinda had a two way communication and I wanted it to go to one-to-many.
+What happens during the show with streaming is largely based on this. I understand what is happening, I build my own logic and things around it, but for getting the streams up and running with one-to-many peerconnections, I made use of this code.
+https://gabrieltanner.org/blog/webrtc-video-broadcast
 
 ## Used dependencies
 
