@@ -1,7 +1,7 @@
 # Real-Time Web @cmda-minor-web · 2019-2020
 
 
-### Demo: {soon here, deployed, but under maintenance}
+### Demo: https://rtw-tomas.herokuapp.com/login (in maintenance mode atm to avoid unwanted requests that rob me of my free dyno hours)
 
 ![concept poster](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/rtw.png)
 
@@ -26,7 +26,8 @@ or this command if you want to clone the repo into your current folder:
 
 or you can download the zip file or something similar by clicking on the green button on the top-right position of every repo.
 
-
+## Replica set 
+To use MongoDB it's change stream functionality, you're required to get a MongoDB replica set up and running. In short, that's a formation of at least 3 mongod instances which maintain the same data. For it to be a valid formation there should at least be 3 instances. It's common to see a formation which has a PRIMARY node for writing and reading data and at least two SECONDARY nodes who listen to the oplog of the PRIMARY node to replicate / update the data.
 
 ## API
 At this moment, I have a little API of my own. I wanted to either make more endpoints in the future to request and query more specific data, but I didn't get there unfortunately. Right now I serve JSON from an endpoint ```/shows/``` which returns 
