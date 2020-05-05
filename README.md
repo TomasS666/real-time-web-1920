@@ -1,6 +1,14 @@
 # Real-Time Web @cmda-minor-web · 2019-2020
 
+
 ### Demo: {soon here, deployed, but under maintenance}
+
+![concept poster]([https://github.com/TomasS666/real-time-web-1920/blob/master/docs/rtw.png)
+
+## Concept
+Your two year concert tour got canceled because a global pandemic? No problem, we got you covered with this new Realtime webapp, a central place to host your events online. Register, add your upcoming shows, edit shows, and interact via a live stream with your audience. 
+You can even see your audience crowd growing live. This way, you could be anywhere and be safe, yet be closer to your fans than ever before. 
+
 
 ## Table of contents
   
@@ -19,9 +27,6 @@ or this command if you want to clone the repo into your current folder:
 or you can download the zip file or something similar by clicking on the green button on the top-right position of every repo.
 
 
-## Concept
-Your two year concert tour got canceled because a global pandemic? No problem, we got you covered with this new Realtime webapp, a central place to host your events online. Register, add your upcoming shows, edit shows, and interact via a live stream with your audience. 
-You can even see your audience crowd growing live. This way, you could be anywhere and be safe, yet be closer to your fans than ever before. 
 
 ## API
 At this moment, I have a little API of my own. I wanted to either make more endpoints in the future to request and query more specific data, but I didn't get there unfortunately. Right now I serve JSON from an endpoint ```/shows/``` which returns 
