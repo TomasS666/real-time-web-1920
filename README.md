@@ -78,7 +78,9 @@ If so, it returns next() so it can go and fire the Mongoose query. If you're not
 Then The query searches for all shows in this case. I wanted to expand that with artistId's, genres etc, but due to time I didn't yet.
 Now it gets every show. 
 
-A show looks like this in the db: 
+
+
+
 
 
 
@@ -109,9 +111,148 @@ module.exports = router
 
 ```
 
+A show looks like this in the db: 
+
+```json
+{
+  "_id": "5eb07698fd5e9598384edc51",
+  "genres": [
+    "Metal"
+  ],
+  "artist": "5ea82454c05ef8039c61ef89",
+  "name": "Ram",
+  "date": "2020-05-05T00:00:00.000Z",
+  "startTime": "18:00",
+  "endTime": "23:00",
+  "timestamp": "2020-05-04T20:10:00.810Z",
+  "room_id": "3bf55bb0-8e43-11ea-ac0a-3b6cf2f3d7b7",
+  "__v": 0
+}"
+
+```
+
+Notice that it holds an artist, but just a reference to the artist and not the artist embeded. That was a decision made on purpose, not to bloat the whole document. If this gets bigger, it's gonna explode.
+
+But when I want the show data, I want the artist data for the show as well. So I use the Mongoose .populate('artists') method to do sort of subquery to fill in that gap. But the artist also has information that's not needed and even sensitive. So within the population I exclude the hashed password and other data that's not required.
+
+
 If you're not logged in you can't acces the endpoint. When you are logged in as a visitor I fetch the data in the client and append it with D3. 
 
-I started out with serveral ideas, but wasn't all quite what I had in mind and I was struggling with getting on the right track with a good and realistic idea. 
+I do that in the following manner:
+
+Visitor script on the overview page: 
+
+```javascript
+
+
+function getShows(){
+    return fetch("/shows")
+}
+
+let shows = []
+
+getShows()
+    .then(string =>{
+        return string.json()
+    })
+    .then(json => {
+        console.log(json)
+        update(json)
+  -------------------------------------------------------------
+
+```
+
+In the end it fires the update function: 
+
+```javascript
+
+function update(json){
+
+
+    const container = d3.select('#shows')
+    const articles = container.selectAll('article')
+    
+    console.log(articles.order())
+
+    articles
+    .data(json)
+    .style('opacity', '1')
+        .select('h3')
+        .text(d => d.name);
+
+    articles
+        .data(json)
+        .select('div')
+        .text(d => {
+            console.log(d)
+            return d.genres.join(', ')
+        })
+
+    
+        
+    articles.transition().delay((d, i)=>{
+        console.log(i * 10)
+        return i * 400
+    })
+    .duration(1000)
+        .style('opacity', '1')
+        
+
+    articles
+        .data(json)
+        .select('div')
+        .html(d => {
+            console.log('enter')
+            return `<span class="info-tag">Genre:</span> ${d.genres.join(', ')}`
+        });
+    
+   var article =  articles
+                    .data(json)
+                    .enter()
+                    .append('article');
+
+    article
+        .attr('id', (d, i)=> i)
+
+    article
+        .append('h3')
+        .text(d => d.name);
+    article
+        .append('div')
+        .html(d => {
+            console.log('enter')
+            return `<span class="info-tag">Genre:</span> ${d.genres.join(', ')}`
+        });
+
+    article
+        .append('div')
+        .html(d => {
+            return `<span class="info-tag">Date:</span> ${d.date}`
+        });
+
+    article
+        .append('div')
+        .html(d => {
+            return `<span class="info-tag">Starting time:</span> ${d.startTime}`
+        });
+
+    article
+        .append('div')
+        .html(d => {
+            return `<span class="info-tag">Axprox end time:</span> ${d.endTime}`
+        });
+
+
+    article
+        .append('a')
+        .attr('href', d => {
+            return `/show/visitor/${d.room_id}`
+        })
+        .text('join');
+
+    articles.data(json).exit().remove()
+
+```
 
 ### Data Lifecycle (DLC)
 ![Data illustratie](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/First-proces.png)
