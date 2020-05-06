@@ -265,13 +265,30 @@ function update(json){
 * Delete show
 * Broadcaster when the artist hosts it's show and the getUserMedia completes to set the broadcaster id as the artist socket id
 * Watcher event when a client connects so the artist can add new peerconnection to the
+* Answer after the the localDescription is set and an peerConnection answer is made
+* disconnectPeer when the 
+
 
 #### Visitor events
 * Join room (when connecting to a namespace by hitting the visitor route : ```/show/visitor/{ predefined room_id } ```
 * client show is added : when the change streams detects an insertion, the server receives the fullDocument which gets emited to the visitor. The visitor then triggers the update function of D3 to update the DOM with the newly added show which came straight out of the db.
-*
+* Offer, when artist does offer to setup a new peerConnection
+
+
 
 #### Server events
+* on connection with namespace: 
+
+```javascript
+
+const nsp = io.of(`${room}`);
+  let broadcaster
+  nsp.on('connection', function (socket) {
+  ----------------
+ ```
+ 
+ 
+ Because I made
 
 ### Events which require more explaination
 #### Visitor
