@@ -260,21 +260,21 @@ function update(json){
 ![Data illustratie show](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-2.png)
 
 ### Socket events
+
 #### Artist events
 * Add show
 * Delete show
 * Broadcaster when the artist hosts it's show and the getUserMedia completes to set the broadcaster id as the artist socket id
 * Watcher event when a client connects so the artist can add new peerconnection to the
 * Answer after the the localDescription is set and an peerConnection answer is made
-* disconnectPeer when the 
-
+* disconnectPeer when the server has a socket disconnected
+* crowdmember disconnected => someone disconnected, so remove a character from the svg.
 
 #### Visitor events
 * Join room (when connecting to a namespace by hitting the visitor route : ```/show/visitor/{ predefined room_id } ```
 * client show is added : when the change streams detects an insertion, the server receives the fullDocument which gets emited to the visitor. The visitor then triggers the update function of D3 to update the DOM with the newly added show which came straight out of the db.
 * Offer, when artist does offer to setup a new peerConnection
-
-
+* crowdmember disconnected => someone disconnected, so remove a character from the svg.
 
 #### Server events
 * on connection with namespace: 
@@ -286,9 +286,13 @@ const nsp = io.of(`${room}`);
   nsp.on('connection', function (socket) {
   ----------------
  ```
+ Because I made a function of the socket logic for the show route (because I seperated my routes into different files) initially, 
+ I figured, that whenever a route like '/show/visitor/{room_id} gets hit, I can take that room_id and let the client connect to it.
  
- 
- Because I made
+On the server the broadcaster let variable is set within the sockets function scope, so it's not accessible outside the function, meaning that when someone else starts a show, it's totally fine. The function gets called because you hit the route and you're connecting to a unique room_id namespace and the rest of the events are handled within the namespace connection event. 
+
+* disconnect : when socket in namespace disconnects emit crowdmember disconnected and disconnectedpeer
+
 
 ### Events which require more explaination
 #### Visitor
