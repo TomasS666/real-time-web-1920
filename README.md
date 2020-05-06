@@ -68,7 +68,48 @@ It might seem intimidating at first, but once you get through it's really awesom
 More about the replica sets and how election can come into play over here: [Wiki - MongoDB / Mongoose / Atlas](https://docs.mongodb.com/manual/core/replica-set-oplog/) 
 
 ## API
-At this moment, I have a little API of my own. I wanted to either make more endpoints in the future to request and query more specific data, but I didn't get there unfortunately. Right now I serve JSON from an endpoint ```/shows/``` which returns 
+At this moment, I have a little API of my own. I wanted to either make more endpoints in the future to request and query more specific data, but I didn't get there unfortunately. Right now I serve JSON from an endpoint ```/shows/``` which returns all the shows added by artists. It's queried from the DB and then send as JSON. 
+
+The query excludes the ObjectId and '_v_' field. Because I don't want that to just be exposed. I did some research, and people say it's not very elegant to just expose that. I can understand. Of course there are probably some catches in my code and vulnerabilities I have overseen at the moment. I'm not an security expert yet, but I'm trying to get better. But why not exclude fields we don't really need. Especially things like id's. 
+
+As you can see in the below code I added some middleware I made which checks if you're have a session going on, if you're logged in.
+If so, it returns next() so it can go and fire the Mongoose query. If you're not logged in, you get redirected to the login page.
+
+Then The query searches for all shows in this case. I wanted to expand that with artistId's, genres etc, but due to time I didn't yet.
+Now it gets every show. 
+
+A show looks like this in the db: 
+
+
+
+```javascript
+
+router.get('/shows/:artistid?', isLoggedIn, (req, res, next)=>{
+
+//  Find all shows, excluse _id and __v field
+//  Sub query Artist, withouth retrieving the ObjectID, hashed password, and additional non needed data
+
+    Show.find({}, '-_id -__v')
+        .populate('artist', '-_id -shows -password -userName -userRole -__v')
+        .exec()
+        
+        .then(json => {
+
+            return json
+            
+        })
+        .then(json => res.json(json))
+        .catch(err => console.log(err))
+    
+})
+
+
+
+module.exports = router
+
+```
+
+If you're not logged in you can't acces the endpoint. When you are logged in as a visitor I fetch the data in the client and append it with D3. 
 
 I started out with serveral ideas, but wasn't all quite what I had in mind and I was struggling with getting on the right track with a good and realistic idea. 
 
@@ -81,6 +122,8 @@ I started out with serveral ideas, but wasn't all quite what I had in mind and I
 #### Artist events
 * Add show
 * Delete show
+* Broadcaster when the artist hosts it's show and the getUserMedia completes to set the broadcaster id as the artist socket id
+* Watcher event when a client connects so the artist can add new peerconnection to the
 
 #### Visitor events
 * Join room (when connecting to a namespace by hitting the visitor route : ```/show/visitor/{ predefined room_id } ```
@@ -89,16 +132,12 @@ I started out with serveral ideas, but wasn't all quite what I had in mind and I
 
 ### Events which require more explaination
 #### Visitor
-* ```show is deleted``` : when the artist removes a show it goes a little different then POSTING. The DELETE method is not supported in HTML5 forms. To my surprise. (You learn all the time). So when I delete one of my shows as an Artist, I check the clicked target within the show list > when it's a button within the show, I use the room_id as identifier because other data is left out on purpose, I emit that room id directly to 
-
-
-
-###
+* ```show is deleted``` : when the artist removes a show it goes a little different then POSTING. The DELETE method is not supported in HTML5 forms. To my surprise. (You learn all the time). So when I delete one of my shows as an Artist, I check the clicked target within the show list > when it's a button within the show article, I use the room_id as identifier because other data is left out on purpose, I emit that room id directly to the clients who are watching their overview. I wanted to use the database as source of truth for this too just like when I add a new show. But I found out it's not possible to receive the deleted fullDocument within the change stream because once the operation of deletion is complete, there is not document anymore to notify about. I expected that it would be deleted and then at least you would get a last change of receiving the deleted doc. But it doesn't work like that.
 
 
 ## Data manipulation
 * Adding users
-* User roles with different rights
+* User roles with different privileges
 * Video and audio streaming
 * Realtime show updates with change streams
 * Deleting shows and communicating that to clients
@@ -147,6 +186,7 @@ To be very short, the ability to stream video and audio to other users is based 
 * Better authentication, especially when joining a namespace
 * Improvements on DOM manipulation
 * Better scalability
+* Move peer connection logic to the server? Or more towards the server
 
 ## Acknowledgements
 Robin, Ramon, Robert, Nick, Laurens, Guido, and possibly others for good ideas, helping with my concept, mental support.
@@ -165,14 +205,9 @@ I was concerned It wouldn't work out anymore. Because I kinda had a two way comm
 What happens during the show with streaming is largely based on this. I understand what is happening, I build my own logic and things around it, but for getting the streams up and running with one-to-many peerconnections, I made use of this code.
 https://gabrieltanner.org/blog/webrtc-video-broadcast
 
-## Used dependencies
-
-
 
 ## Used packages for Week 1
 https://github.com/wilsonwu/translation-google (MIT)
-
-## Conclusion
 
 ## License
 
