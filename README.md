@@ -50,7 +50,7 @@ User creation
 
 In overview shows: 
 
-![Illustratie overview](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/changestreeam.png)
+![Illustratie overview](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/change-stream.png)
 
 During a show : RTCPeerconnections
 
