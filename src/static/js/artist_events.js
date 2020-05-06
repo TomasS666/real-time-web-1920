@@ -51,10 +51,6 @@ if(document.querySelector('section#shows')){
     })
 }
 
-function hostingShow(){
-
-}
-
 }
 
     

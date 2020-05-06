@@ -13,7 +13,6 @@ const isLoggedIn = require('../../middleware/is-logged-in')
 
 router.get('/shows/:artistid?', isLoggedIn, (req, res, next)=>{
 
-
 //  Find all shows, excluse _id and __v field
 //  Sub query Artist, withouth retrieving the ObjectID, hashed password, and additional non needed data
 
