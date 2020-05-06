@@ -11,11 +11,7 @@ You can even see your audience crowd growing live. This way, you could be anywhe
 
 
 
-### Data Lifecycle (DLC)
 
-![Data illustratie](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/First-proces.png)
-![Data illustratie extn. api](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-time.png)
-![Data illustratie show](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-2.png)
 
 
 ## Table of contents
@@ -47,7 +43,20 @@ You can even see your audience crowd growing live. This way, you could be anywhe
   * [Conclusion](#conclusion)
   * [License](#license)
   
-# Description
+### Data Lifecycle (DLC)
+
+User creation
+![Data illustratie](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/user-creation.png)
+
+In overview shows: 
+
+![Illustratie overview](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/changestreeam.png)
+
+During a show : RTCPeerconnections
+![Data illustratie extn. api](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-time.png)
+
+During the show:
+![Data illustratie show](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-2.png)
 
 
 ## How to install
