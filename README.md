@@ -268,12 +268,54 @@ function update(json){
 
 #### Visitor events
 * Join room (when connecting to a namespace by hitting the visitor route : ```/show/visitor/{ predefined room_id } ```
+* client show is added : when the change streams detects an insertion, the server receives the fullDocument which gets emited to the visitor. The visitor then triggers the update function of D3 to update the DOM with the newly added show which came straight out of the db.
+*
 
 #### Server events
 
 ### Events which require more explaination
 #### Visitor
-* ```show is deleted``` : when the artist removes a show it goes a little different then POSTING. The DELETE method is not supported in HTML5 forms. To my surprise. (You learn all the time). So when I delete one of my shows as an Artist, I check the clicked target within the show list > when it's a button within the show article, I use the room_id as identifier because other data is left out on purpose, I emit that room id directly to the clients who are watching their overview. I wanted to use the database as source of truth for this too just like when I add a new show. But I found out it's not possible to receive the deleted fullDocument within the change stream because once the operation of deletion is complete, there is not document anymore to notify about. I expected that it would be deleted and then at least you would get a last change of receiving the deleted doc. But it doesn't work like that.
+* ```show is deleted``` : when the artist removes a show it goes a little different then POSTING. The DELETE method is not supported in HTML5 forms. To my surprise. (You learn all the time). So when I delete one of my shows as an Artist, I check the clicked target within the show list > when it's a button within the show article, I use the room_id as identifier because other data is left out on purpose.
+
+Arist delete show: 
+```javascript
+  fetch(`/remove-show/${room_id}`, {
+                method: 'DELETE'
+            }).then(res => {
+                console.log(res)
+
+                socket.emit('artist deleted show', room_id )
+                window.location.reload()
+            })
+
+```
+
+Server broadcasts because as I wrote before, the the visitors see every show atm in their overview:
+```javascript
+        socket.on('artist deleted show', (data) => {
+            console.log('artist deleted', data)
+            socket.broadcast.emit('show is deleted', data)
+        })
+```
+
+Visitor find show by room_id and filter it out to produce a new array (which is assigned to the old array, not very functional, I know, but it's all not very functional) and fire update function : 
+
+```javascript
+
+ socket.on('show is deleted', (data)=>{
+            console.log(data)
+            if(shows.find(show => show.room_id == data)){
+                console.log(shows)
+                shows = shows.filter(show => show.room_id != data)
+                update(shows)
+            }else{
+                console.log('show is not here ', shows)
+            }
+        })
+
+```
+
+I emit that room id directly to the clients who are watching their overview. I wanted to use the database as source of truth for this too just like when I add a new show. But I found out it's not possible to receive the deleted fullDocument within the change stream because once the operation of deletion is complete, there is not document anymore to notify about. I expected that it would be deleted and then at least you would get a last change of receiving the deleted doc. But it doesn't work like that.
 
 
 ## Data manipulation
