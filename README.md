@@ -382,7 +382,7 @@ Show.watch()
 
 This is possible because I have a replica set. Now when the artist adds or deletes the show from the DB I get notified that operations has happened to the show collection like so: 
 
-```json
+```
 
 2020-05-06T01:18:38.756Z {
   _id: {
