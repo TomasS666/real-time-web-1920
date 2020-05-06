@@ -10,6 +10,14 @@ Your two year concert tour got canceled because a global pandemic? No problem, w
 You can even see your audience crowd growing live. This way, you could be anywhere and be safe, yet be closer to your fans than ever before. 
 
 
+
+### Data Lifecycle (DLC)
+
+![Data illustratie](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/First-proces.png)
+![Data illustratie extn. api](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-time.png)
+![Data illustratie show](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-2.png)
+
+
 ## Table of contents
 - [Real-Time Web @cmda-minor-web · 2019-2020](#real-time-web--cmda-minor-web---2019-2020)
     + [Demo: https://rtw-tomas.herokuapp.com/login (in maintenance mode atm to avoid unwanted requests that rob me of my free dyno hours)](#demo--https---rtw-tomasherokuappcom-login--in-maintenance-mode-atm-to-avoid-unwanted-requests-that-rob-me-of-my-free-dyno-hours-)
@@ -254,10 +262,7 @@ function update(json){
 
 ```
 
-### Data Lifecycle (DLC)
-![Data illustratie](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/First-proces.png)
-![Data illustratie extn. api](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-time.png)
-![Data illustratie show](https://github.com/TomasS666/real-time-web-1920/blob/master/docs/Show-2.png)
+
 
 ### Socket events
 
