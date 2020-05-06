@@ -289,14 +289,130 @@ function update(json){
 * Shows were first rendered server side at entrance of the site, now the shows it's getting fetched in the client from my endpoint which serves the show data without objectId from the db to avoid vulnerabilities. And then it gets appended to the DOM. It's slower, it's not performant, but this was my way to keep an initial state of data which I can use to differ from incoming changes. The thing that makes me proud is that it's from a truthy source in my opinion because: client fetches data dat comes out of the database, server listens to change in database with a stream, if a change occured, I check the change operation and then I emit the fullDocument of the change over sockets to the clients. So data comes from the database anyway. If the client refreshed, it
 
 
-## Micro features / interactions
+## Things I'm proud of 
+I've learned a lot, almost too much to mention. Yet some things really took me a long time to figure out but were really cool to see in live action in the end.
 
+Things like adding the show to the db are not really exciting. But here is the code for that, because what happens after this is much more cool.
+
+```javascript
+
+router.post('/add-show', isLoggedIn, (req, res, next) => {
+
+    Artist.findOne({
+            userName: req.session.user.userName
+        }).exec()
+        .then(async (artist) => {
+            console.log('Got artist', artist);
+
+
+            console.log(`Date of event : ${dateFormat(req.body.date, 'dd-mm-yyyy')}`)
+
+            // Save show with reference id to artist
+            const newShow = new Show({
+                artist: artist._id,
+                name: req.body.title,
+                genres: req.body.genres,
+                date: req.body.date,
+                startTime: req.body.startTime,
+                endTime: req.body.endTime,
+                timestamp: new Date(),
+                room_id: uuid.v1()
+            })
+
+            let addedShow = null
+            // Save show
+            newShow.save((error, doc) => {
+                console.log("what's happening")
+                if (error) {
+                    console.log(error)
+                } else {
+                    addedShow = doc
+                    console.log('saved', addedShow)
+                }
+            });
+
+            // Add show reference to artist shows array
+
+            artist.shows.push(newShow._id)
+            const shows = await artist.save()
+
+            // console.log('added show', addedShow)
+            return [shows, addedShow]
+
+        }).then(([shows, addedShow]) => {
+            // console.log('Result?', addedShow)
+            res.redirect('/profile')
+        })
+        .catch(err => {
+            console.log(err)
+            res.redirect('/profile')
+        })
+})
+```
+Short: I find the user who is logged in as artist in the Artist collection. I mean the artist who is logged in should only be able to create his or her own show. Within the resolvement of finding the Artist, I create a new show, save it to the show collection and then save a reference id to the artist shows array and save the artist.
+
+But while this artist is on this route, I start a change stream which keeps track of the show collection:
+
+```javascript
+
+Show.watch()
+            .on('change', data => {
+                console.log(new Date(), data)
+
+                if (data.operationType == "insert") {
+   
+                    console.log("Document inserted")
+
+                    delete data.fullDocument['_id']
+                    delete data.fullDocument['__v']
+
+                    console.log(data.fullDocument)
+                    socket.emit("client show added", {
+                        data: data.fullDocument
+                    });
+              
+                } else if (data.operationType == "update") {
+                    socket.broadcast.emit("client show updated", {
+                        data: data.fullDocument
+                    });
+                }
+                ..............
+
+```
+
+This is possible because I have a replica set. Now when the artist adds or deletes the show from the DB I get notified that operations has happened to the show collection like so: 
+
+```json
+
+2020-05-06T01:18:38.756Z {
+  _id: {
+    _data: '825EB2106E000000012B022C0100296E5A10044787501AA6704DE18704BD11C3517A7D46645F696400645EB2106EBA65D24CE46D113A0004'
+  },
+  operationType: 'insert',
+  clusterTime: Timestamp { _bsontype: 'Timestamp', low_: 1, high_: 1588727918 },
+  fullDocument: {
+    _id: 5eb2106eba65d24ce46d113a,
+    genres: [ 'Metal' ],
+    artist: 5ea82454c05ef8039c61ef89,
+    name: 'Slayer',
+    date: 2020-05-07T00:00:00.000Z,
+    startTime: '18:00',
+    endTime: '23:00',
+    timestamp: 2020-05-06T01:18:38.693Z,
+    room_id: '83e3a950-8f37-11ea-a6fa-6f8295731d1e',
+    __v: 0
+  },
+  ns: { db: 'clusterfck', coll: 'shows' },
+  documentKey: { _id: 5eb2106eba65d24ce46d113a }
+}
+
+```
+To get this up and running took me some time. And as always I wanted to do a lot more. But I learned tons of thing about databases, replica sets, realtime change streams, way more about the correct use of middleware, etc etc. 
 
 ## Wishlist
 * Editing shows
 * Show countdown
 * Scalable solution
-
 * Ticket system, wanted to try Ticketmaster API.
 
 
